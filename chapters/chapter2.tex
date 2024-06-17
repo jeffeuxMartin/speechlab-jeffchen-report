@@ -5,7 +5,7 @@
 \section{深層類神經網路}
 
 \subsection{簡介}
-
+　　
 深層類神經網路（Deep Neural Network，DNN）是由神經科學家麥氏（McCulloch）與皮氏（Pitts）於 1943 年提出 \cite{mcculloch_logical_1943} 的計算模型，靈感取自連結主義（Connectionism）的核心主張 --- 以模仿生物神經網路的連結方式模擬複雜的心智活動。
 
 為模擬神經細胞處理訊號的過程，深層類神經網路最基本的單位稱為「神經元（Neuron）」，其本質為線性分類器。每個神經元接收的輸入數值 $x = (x_1, x_2, \cdots\cdots, x_N)$ 是一個 $N$ 維向量，每一維會被賦予一個權重（Weight） $w = (w_1, w_2, \cdots\cdots, w_N)$  ，加權後總和再加上偏差值 $b$，得到線性輸出值。為了模擬神經細胞的觸發過程，該分類器常被加上非線性的激發函數（Activation Function）$\sigma$ 的轉換，才得到最終輸出值 $y$。如圖 \ref{fig:single-neuron}所示，神經元的運算規則以下列數學式描述：
@@ -32,7 +32,11 @@
     \label{fig:mlp}
 \end{figure}
 
-藉助深層類神經網路的彈性，我們可以透過⼤量訓練資料來訓練模型，藉此逼近應⽤任務中欲近似的函數 $f$，該函數蘊藏在資料集 $\mathcal{D} = \{(x_i, y_i)\}_{i=1}^N$ 中，其中每個資料點 $(x_i, y_i)$ 為輸入與輸出間的配對，即對於 $N$ 個資料點都有 $$y_i = f(x_i) \ \  \forall i \in \{1, \cdots\cdots, N\}$$之關係。為了使這個函數更加逼近目標函數 $f$，類神經網路會構建一個逼近中的函數 $f_{\theta_t}(\cdot)$ 。透過不停的迭代，模型對資料集 $\mathcal{D}$ 的每一筆資料 $x$ 給出預測 $f_{\theta_t}(x)$ 。透過某個減損函數（Loss Function）$\mathcal{L}$ 計算出誤差（Error），此誤差對參數 $\theta_t$ 求出梯度（Gradient）後將指示模型更新的方向，以此乘上學習率（Learning Rate）$\eta$ 後從參數  $\theta_t$ 減去，便能對整個模型進行更新，使之更有機會接近目標函數 $f$。由於此過程是依照梯度使得函數 $\mathcal{L}$ 逐步降低，以此獲名「梯度下降法（Gradient Descent）」，其公式如下：
+藉助深層類神經網路的彈性，我們可以透過⼤量訓練資料來訓練模型，藉此逼近應⽤任務中欲近似的函數 $f$，該函數蘊藏在資料集 $\mathcal{D} = \{(x_i, y_i)\}_{i=1}^N$ 中，其中每個資料點 $(x_i, y_i)$ 為輸入與輸出間的配對，即對於 $N$ 個資料點都有 
+\begin{align}
+    y_i = f(x_i) \ \  \forall i \in \{1, \cdots\cdots, N\}
+\end{align}
+之關係。為了使這個函數更加逼近目標函數 $f$，類神經網路會構建一個逼近中的函數 $f_{\theta_t}(\cdot)$ 。透過不停的迭代，模型對資料集 $\mathcal{D}$ 的每一筆資料 $x$ 給出預測 $f_{\theta_t}(x)$ 。透過某個減損函數（Loss Function）$\mathcal{L}$ 計算出誤差（Error），此誤差對參數 $\theta_t$ 求出梯度（Gradient）後將指示模型更新的方向，以此乘上學習率（Learning Rate）$\eta$ 後從參數  $\theta_t$ 減去，便能對整個模型進行更新，使之更有機會接近目標函數 $f$。由於此過程是依照梯度使得函數 $\mathcal{L}$ 逐步降低，以此獲名「梯度下降法（Gradient Descent）」，其公式如下：
 \begin{align}
     \theta_{t+1} \leftarrow \theta_{t} - \eta \nabla_\theta\mathcal{L}(\mathcal{D}, f_{\theta_t}(\cdot))
 \end{align}
@@ -78,7 +82,7 @@
 \subsection{遞迴式類神經網路與序列至序列模型}
 
 \subsubsection{遞迴式類神經網路}
-
+　　
 遞迴式類神經網路（Recurrent Neural Network，RNN）常用於處理隨時間變化的序列資料，特別是語音與文字等等，順序資訊相當關鍵的各種語言任務。
 
 為了處理需要記憶和狀態的資料類型，
@@ -91,18 +95,18 @@
 遞迴式類神經網路通常用在處理序列至序列的應用，例如語音辨識、語音合成或機器翻譯等和語言密切相關的任務中。
 
 \subsubsection{序列至序列模型}
-
+　　
 由於許多語言資料通常以兩個序列互相配對的形式呈現，因此專門處理這類資料的模型被稱為序列至序列模型（Sequence-to-sequence，Seq2seq）\cite{sutskever2014sequence}。此類模型的典型架構由編碼器（Encoder）和解碼器（Decoder）組成，旨在模擬輸入與輸出序列之間的變化與相依關係（Dependency）。
 
 序列到序列模型一般有兩種模式：其一是每個時間點都生成一個輸出的向量，適用於輸入與輸出序列等長的任務，這種模式被稱為符記分類（Token Classification）；但更常見的情況是，輸入與輸出序列的長度並不相同。處理後者的典型作法是讓編碼器將輸入序列依據時間，一步一步輸入編碼器，將序列編碼為內部表徵（Latent Representation）。完成編碼後，編碼器將最後一個時間點的表徵代表用以整個序列，稱為「語境向量（Context Vector）」。該向量接著被傳遞給解碼器，依序生成輸出序列。
 \subsection{專注機制與轉換器類神經網路}
 
 \subsubsection{專注機制}
-
+　　
 由於遞迴式類神經網路需要處理整個序列的編碼和解碼資訊，對時間點距離較遠的輸入容易被遺忘，亦即難以處理長期相依性（Long-term Dependency）問題。為了解決這種困境，巴氏（Bahdanau）等人提出了「專注機制（Attention Mechanism）」\cite{bahdanau2014neural}。該機制讓解碼器將每個輸入序列的訊號都視作「部分的」語境向量，由對不同時間點的向量加權合計獲得，使得在生成輸出序列時能依據當時的需求從輸入序列中提取所需的訊息。專注機制的引入，使得序列至序列模型在處理如語音辨識、機器翻譯等任務時大大改善了效能。
 
 \subsubsection{轉換器類神經網路}
-
+　　
 儘管遞迴式類神經網路善於處理時序資料，但其難以平行化的架構限制了其在訓練和推理（Inference）時的效率。2017 年，瓦氏（Vaswani）等人 \cite{vaswani2017attention} 提出了完全由專注機制構成、不依賴遞迴運算的序列至序列模型，並稱之為「轉換器（Transformer）」，以解決機器翻譯等任務。
 
 轉換器類神經網路一般包含編碼器和解碼器兩部分，均為多層架構。圖 \ref{fig:tfm_arch} 展示完整的轉換器架構圖，以下分別介紹其主要元件：
@@ -164,7 +168,7 @@
 \section{表徵與自監督式學習}
 
 \subsection{特徵抽取與表徵學習}
-
+　　
 不論採用何種模型，為了讓機器可以處理並捕捉輸入資料中的訊號與模式（Pattern），如何對資料編碼和運算的步驟，在機器學習中稱之為特徵抽取（Feature Extraction）或表徵學習（Representation Learning），這是模型建構中不可或缺的重要步驟。
 
 對於抽象的語言概念，早期工程領域根據對語音和文字的理解，分別進行了不同的處理。對於離散且可計數的文字，人們使用詞頻統計衍生出如 n 連詞（n-gram）、TF-IDF（Term-Frequency Inverse Document Frequency）等特徵作為模型學習的前處理步驟；而對於連續且複雜的語音，工程師則透過聲學原理與訊號處理的知識，使用如濾波器組（Filter Bank）、梅爾倒頻譜係數（Mel-Frequency Cepstrum Coefficient，MFCC）等特徵，類比人耳捕捉語音訊號的過程。
@@ -172,7 +176,7 @@
 在深層學習逐漸發展的過程中，自然語言處理領域的一大里程碑是米氏（Mikolov）提出的「word2vec」模型 \cite{mikolov_efficient_2013}，該模型以連續的向量表徵（Vector Representation）取代稀疏（Sparse）的統計數據，對離散的文字單詞進行「詞嵌入（Word Embedding）」編碼。通過大量文本運算，將各單詞之間的共現（Collocation）以跳躍詞（Skip-gram）、連續詞袋（Continuous Bag-of-Word，CBOW）等演算法轉換成高維向量空間中的點，找出每個單詞最適合的語義表徵。爾後，為了更細緻地捕捉同一單詞在不同句子中的脈絡變化，ELMo（Embeddings from Language Model）\cite{peters_deep_2018} 提出了「脈絡化詞嵌入（Contextualized Embedding）」的概念，使得各單詞在運算表徵的過程中可以根據上下文進行些微調整。
 
 \subsection{自監督學習}
-
+　　
 隨著轉換器模型的提出，BERT（來自轉換器的雙向編碼器表徵，Bidirectional Encoder Representations from Transformers）\cite{devlin_bert_2019} 被提出。通過自專注機制，工程師們無需依賴人工標記，透過預先設定任務（Pretext Task）引導模型從大量文本中自行找出更細緻且考量脈絡（Contextualized）的語義關係，並在許多文字任務上獲得了優異的成績。
 
 自此，楊氏（Yann LeCun）將這種以特定任務作為引導、藉助資料本身的結構替代標註，從大量未標註資料中進行學習資料模式（Pattern）的訓練方式，稱之為「自監督學習（Self-supervised Learning，SSL）」。BERT 的成功使自監督學習得以大行其道，並出現了許多由巨量資料進行預訓練（Pre-train）的基石模型（Foundation Model），有效解決了語言處理領域中的標註資料稀缺的問題。人們在解決語言相關任務時，不需從頭蒐集資料與進行耗時耗能的訓練過程，而是可以利用基石模型優良的泛化（Generalization）能力，解決各種應用任務的需求。相比於預訓練的任務，這些更貼近日常現實的任務被稱為「下游任務（Downstream Task）」，能應對廣泛的下游任務種類，這是基石模型最大的優勢。
@@ -182,7 +186,7 @@
 依照這些語音自監督模型的預訓練學習模式，可大致分為重建式、預測式與對比式模型。以下分別介紹這三類模式：
 
 \subsubsection{重建式學習（Reconstruction Learning）}
-
+　　
 此類模型通過對輸入訊號進行擾動（Perturb）後，期望模型將被更動的輸入重新預測回原始資料，通常減損函數表示為：
 \begin{align}
     \mathcal{L}_{recon} = \mathbb{E}_x[|f_\theta(\tilde{x}) - x|]
@@ -190,7 +194,7 @@
 其中 $\tilde{x}$ 為擾動後的資料，$f_\theta(\cdot)$ 為模型函數。擾動方式通常以遮蔽為主，在文字處理中以 BERT 為代表，稱為「遮蔽語言模型（Masked Language Model，MLM）」。在語音中，採用此方式學習的有 Mockingjay \cite{liu_mockingjay_2019}、TERA \cite{t_tera_2021} 等模型。  % NPC
 
 \subsubsection{預測式學習（Predictive Learning）}
-
+　　
 此類模型通過預訂一些學習目標函數，製造類似輸入與輸出的配對資料，讓模型預測該函數的結果來學習資料中的特定結構。其訓練減損函數可表示為：
 \begin{align}
     \mathcal{L}_{pred} = \mathbb{E}_x[\text{eval}(f_\theta(x), \hat{f}(x))]
@@ -200,7 +204,7 @@
 目標函數的典型代表是自迴歸（Autoregressive），期望模型預測未來時間點的輸入表徵。文字方面以生成式預訓練轉換器（Generative Pretrained Transformer，GPT）系列 \cite{radford_language_nodate, brown_language_2020}為代表，語音上的自迴歸預測編碼（Autoregressive Predictive Coding，APC） \cite{chung_generative_2020} 也是採用此種模式。此外，語音基石模型還可以使用其他訓練目標，如 PASE+ \cite{ravanelli_multi-task_2020} 預測其他模型的表徵，而本文著重探究的「隱藏單元 BERT（Hidden-unit BERT，HuBERT）」\cite{hsu_hubert_2021, hsu_hubert_2021-2} 則以預測分群（Cluster）後的輸入表徵為目標，這些預測目標又被視為偽標註（Pseudo-label），後文將著重探討。
 
 \subsubsection{對比式學習（Contrastive Learning）}
-
+　　
 此學習方式的訓練目標是要求模型區分正樣本（Positive Sample）與負樣本（Negative Sample）的差異，減損函數通常定義為：
 \begin{align}
     \mathcal{L}_{contr} = -\mathbb{E}_x\left[\log
@@ -216,7 +220,7 @@
 對比式學習通過正負樣本的定義，將預訓練任務形塑為分類問題，因此減損函數本質上為交叉熵，使模型能夠判斷訓練資料中的結構差異。
 
 \subsection{向量量化與離散單元}
-
+　　
 語音訊號雖然記錄語言資訊，卻與影像資料一樣都是連續數值資料，不像離散的文字較易處理，因此發展出了許多應用廣泛的模型。為了使語音模型訓練可以套用自然語言處理領域的演算法，從連續語音中找出離散表徵逐漸成為研究趨勢，這類研究被稱為「聲學單元發掘（Acoustic Unit Discovery，AUD）」。
 
 由於語言概念本質上是離散符號，向量量化技術常用於涉及語言標註的情境，如電腦視覺經典的量化向量變分自編碼器（Vector-Quantized Variational Autoencoder，VQ-VAE）\cite{van2017neural}，利用影像標註的離散語言單詞特性，使模型學習的表徵向量被約束在編碼簿（Codebook） 的幾個向量中。
@@ -229,7 +233,7 @@ HuBERT \cite{hsu_hubert_2021-2} 則應用先對連續的 MFCC 特徵進行 K-平
 這些經過兩輪訓練後，從模型表徵分群得到的群心，被視為「隱藏單元（Hidden Unit）」，編碼了語音訊號中的代表性聲學特徵。透過找出隱藏單元的過程，HuBERT 在低資源情況下達到與 Wav2vec 2.0 相近的語音辨識成績。
 
 \subsection{無文字（Textless）架構}
-
+　　
 奠基於 HuBERT 等語音基石模型的成功，利用隱藏單元的概念，將大量語音資料表徵進行 K-平均演算法，作為這些語音訊號的偽標籤。如此得到的大量離散隱藏單元形成了「偽文字（Pseudo-text）」的語料庫，基於這些離散單元訓練語言模型，稱為「生成式口語語言模型（Generative Spoken Language Model，GSLM）」\cite{lakhotia_generative_2021-1}。配合反向語音合成訓練基於離散單元的語音生成模型，整體架構不依賴文字標註，訓練出純語音語言模型，稱為「無文字（Textless）架構」\cite{noauthor_textless_2021}。
 
 無文字模式在語音問答（Spoken Question Answering）\cite{lin2022dual}和語音到語音翻譯 （Speech-to-speech Translation）\cite{chen_speech--speech_2023}中取得了前所未有的進展。這些「離散單元（Discrete Unit）」被視為類似文字卻不依賴人類文字標記的語音表徵，具有儲存位元率低和可套用文字語言模型訓練模式的優勢，受到語音社群的廣泛借鑑，後續也帶出了許多如\cite{zhang2024speechtokenizer} 等將語音以離散表徵編碼的研究。
@@ -237,5 +241,5 @@ HuBERT \cite{hsu_hubert_2021-2} 則應用先對連續的 MFCC 特徵進行 K-平
 雖然在系統與應用任務上取得了成功，但這些離散單元本身與文字的差異，及其對語音語言模型訓練的幫助，仍是領域內探討的焦點。有鑑於此，本論文基於語言知識，從最接近文字且與語音訊號最相關的「音位（Phoneme）」開始探討，期望了解離散單元能帶來的特徵及其對後續應用的幫助。
 
 \section{本章節總結}
-
+　　
 本章節首先介紹了深層學習模型的核心部件 --- 類神經網路的基本原理，隨後對本論文研究的核心 --- 「語音表徵」與「離散單元」的發展與歷史進行了梳理。接下來的章節將緊扣這些基石模型得到的離散特徵，對其與「音位」這類語音學標記之間的統計關係進行更深入分析。
