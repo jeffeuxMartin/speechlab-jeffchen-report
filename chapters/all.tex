@@ -1,0 +1,38 @@
+\newcommand{\NOTEHERE}[1]{\colorbox{yellow}{\textcolor{blue}{
+    \lparen\lparen\lparen}\textcolor{
+        red}{#1}\textcolor{blue}{\rparen\rparen\rparen}}}
+
+% newline
+\newcommand{\PROBABLY}[1]{}
+%% \newcommand{\PROBABLY}[1]{\colorbox{red}{\textcolor{green}{
+%%     \lbrack\lbrack\lbrack}\textcolor{green}{#1}\textcolor{
+%%         green}{\rbrack\rbrack\rbrack}}}
+
+% \textcolor{green}{#1}
+\newcommand{\FIXTHIS}[1]{\par\makebox[\textwidth]{
+    \colorbox{pink}{\textcolor{green}{
+        \lbrack\lbrack\lbrack}\textcolor{
+            blue}{#1}\textcolor{green}{\rbrack\rbrack\rbrack}}}}
+
+\newcommand{\mysetcounter}[2]{\setcounter{#1}{\the\numexpr#2 - 1\relax}}
+\newcommand{\mychcnt}[1]{\mysetcounter{chapter}{#1}}
+% \newcommand{\mychcnt}[1]{}
+
+\newcommand{\mysccnt}[1]{\mysetcounter{section}{#1}}
+
+% \newcommand{\CITEME}{\colorbox{red}{\textcolor{green}{
+%     \lparen\lparen\lparen}\textcolor{
+%         white}{CITEME\textcolor{green}{\rparen\rparen\rparen}}}\:}
+\newcommand{\CITEME}{\colorbox{red}{\textcolor{green}{
+    \lparen}\textcolor{
+        white}{?\textcolor{green}{\rparen}}}\:}
+
+\newcommand{\mycite}[1]{[\textcolor{red}{#1}]}
+\newcommand{\uucite}[1]{[\textcolor{red}{\footnote{#1}}]}
+\newcommand{\citetag}[1]{}
+
+\input{chapters/chapter1}
+\input{chapters/chapter2}
+\input{chapters/chapter3}
+\input{chapters/chapter4}
+\input{chapters/chapter5}
