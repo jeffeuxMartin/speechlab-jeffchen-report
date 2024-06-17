@@ -1,0 +1,522 @@
+\chapter{多個語音離散表徵與音位的關係}
+\newcommand{\myhline}{\noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}}
+
+\newcommand{\draftbegin}{\centerline{\textcolor{magenta}{\textbf{=======================以下是草稿！=======================}}}}
+\newcommand{\drafttermi}{\centerline{\textcolor{blue}{\textbf{=======================以上是草稿！=======================}}}}
+
+\renewcommand{\arraystretch}{0.7} % 調整行高
+\newcommand{\jefftablesep}{\vspace{0.5cm}}
+
+
+\section{動機}
+　　
+% 如前一章所述，由於單一離散單元所代表的僅為 10 或 20 毫秒的語音訊號，而作為一種類似文字的語音內容表示，每一個音位往往都對應超過一個以上的離散單元。因此，基於使得離散單元序列可以不論在長度和對應的語音訊號兩方面都能更接近於文字，因此從自然語言處理的分詞演算法（Tokenization）得到靈感，本章節將嘗試將這些演算法應用於離散單元的序列之上，並應用上一章節的分析方式，比對將多個離散單元重新分組形成符記之後，是否可以在保有「完全從語音訊號獲得」的同時，得到更接近於音位的序列。
+如前一章所述，一個文字或音位往往對應到上百毫秒的語音訊號，然而單一離散單元所對應的聲音訊號為 10 或 20 毫秒，亦即同一段語音所對應的離散單元數目將比音位或文字多出許多。本章節從自然語言處理中獲取靈感，將分詞演算法（Tokenization）應用於離散單元序列上，並應用上一章節的分析方法檢驗將多個離散單元所組成之符記。探討分詞後，離散單元是否可以同時擁有無文字（Textless）\cite{lakhotia_generative_2021, lakhotia_generative_2021-1, noauthor_textless_2021} 的特性，且更接近音位的序列，成為更好的語音表徵。
+% 　　
+% (1) 20B-21A (2) 21B-22A (3) 22B-23A (4) 23B-24A
+
+\section{相關研究} 
+　　
+在無文字架構被提出後的約兩年後，藉分詞方法組合離散單元的研究逐步出現。
+最初提出「聲學片段（Acoustic Piece）」的是任氏（Ren）等人 \cite{ren_speech_2022}\citetag{1-22A4-Pretrain-ap}），該論文
+% 基於離散單元與音位的關聯性，並透過
+% 觀察
+% 從
+比對
+離散單元序列
+及對應的文字轉寫，
+% 之間的，
+% 中，對應轉寫文字的單詞，兩者互相比對可以
+從中
+觀察
+到許多相似的模式（Pattern），
+而且不限於單一語者
+。
+% ，甚至在不同語者之間也能觀察到此一現象。
+% 以此
+受此啟發，
+本論文
+首先將離散單元使用句子片段（SentencePiece） \cite{kudo_sentencepiece_2018} 分詞，獲得新的符記 --- 「聲學片段（Acoustic Piece）」，並用於語音辨識的預訓練上。
+
+不久，由吳氏（Wu）提出的 Wav2seq \cite{wu_wav2seq_2023}\citetag{2-22A5-wav2seq}論文中，考量文字與語音的序列長度差異，並基於離散單元和音位的關聯性，將離散單元視為字符（Character），嘗試將這些字符透過分詞方法組成「偽語言（Pseudo-language\footnote{偽語言對應之離散單元被視為「偽文字（Pseudo-text）」}）」，來幫助語音到文字的模型。因為解碼器在實際應用時需要生成的序列多是文字的符記 --- 次詞單位（Subword Unit），因此該篇研究旨在讓模型在預訓練
+% 時可以更適應下游任務。
+後可以快速適應下游任務。
+與前一篇呼應，「聲學片段」對語音預訓練的效果在
+\cite{10096788}\citetag{3-23A-coarser-grain}
+中被探討，
+此後聲學片段更被應用於
+縮短資料序列長度\cite{chang_exploration_2023}\citetag{4-23B-Exploration of Efficient End-to-End ASR using Discretized Input from Self-Supervised Learning} 
+、
+語音生成
+\cite{shen2024acoustic}\citetag{5-24A-speech-gen}，
+或
+% 透過離散單元與可以分離語者資訊的能力學習表徵
+學習更穩健（Robust）的語音表徵
+\cite{chang2023r}\citetag{6-23B-rspin-acousticpiece}。
+
+% \cite{yang2024towards}\citetag{23B-toward-universal-speech-distok-asrtts}
+% \cite{ma23b_interspeech}\citetag{23A-pusinglimit}
+
+近期，張氏（Chang）等人\cite{chang_exploring_2024}\citetag{7-23B-shinji-hsiuhsuan}將以分詞方法處理離散單元的流程（Pipeline）納入 ESPNet 套件 \cite{watanabe2018espnet} 中，並在語音辨識、語音翻譯等任務中獲得了超越以往的表現，進一步證明了這個方法的效果。
+
+% \textbf{\#\# 對語音離散表徵的分詞研究}
+% \subsection{(Version ChatGPT)}
+% \section{分詞方法在語音處理中的應用}
+% 在語音處理領域，這些分詞方法同樣適用。通過對離散語音單元的分詞處理，可以有效地將語音信號轉換為子詞單元，提高語音識別和翻譯模型的性能。例如，Ren 等人的方法通過句子片段化處理將高頻代碼模式合併為聲學片段，從而有效地將輸入音頻與自然語言橋接起來 \cite{ren_speech_2022}。
+
+
+\section{分詞方法}
+
+　　
+在以文字為主體的自然語言處理中，文字文本除了以單詞（Word）或字元（Character）為處理單位，更常見的作法是
+透過
+分詞演算法（Tokenization）將
+文本
+分段，以「次詞單位（Subword Unit）」構成詞彙表
+來重新編碼文本，用於文字模型的訓練與推理。
+
+分詞方法的優點一般包含：
+
+\begin{enumerate}
+    \item 固定詞彙表大小，避免未登錄詞（Out-of-vocabulary，OOV）
+    \item 縮短資料序列的長度，提升訓練和推論的效率。
+    \item 分解單詞，捕捉更細緻的語意關係，模擬如英語中的字首（Prefix）、字尾（Suffix）等等具有特定意義的文字組合。
+\end{enumerate}
+
+\subsection{常見演算法}
+
+　　
+以下介紹幾種常見的分詞方法：
+
+\paragraph{位元組對編碼（Byte Pair Encoding，BPE）}
+
+位元組對編碼 \cite{10.5555/177910.177914, sennrich_neural_2016} 是一種常用的分詞方法，最初來自資料壓縮技術 \cite{10.5555/177910.177914}，後來被引入到自然語言處理領域，用以處理機器翻譯問題 \cite{sennrich_neural_2016} 。
+該演算法從字元開始，根據詞彙表中各個次詞單位的頻率，反覆合併常見的字元成為新的次詞單位，直到達到預定的詞彙表大小。
+
+% BPE 的基本思想是通過反覆合併頻繁出現的字節對來構建子詞單元。其主要優點包括：
+
+
+% \begin{enumerate}
+%     \item 減少詞彙表的大小：BPE 通過將常見的子詞單元加入詞彙表，顯著減少了詞彙表的大小，提高了模型的泛化能力。
+%     \item 處理罕見詞和新詞：通過使用子詞單元，BPE 能夠更好地處理罕見詞和新詞，因為這些詞可以拆分為已存在的子詞單元。
+%     \item 減少數據冗餘：BPE 在減少數據冗餘方面表現出色，提升了訓練和推理的效率。
+% \end{enumerate}
+
+
+% \draftbegin
+% \input{4-3-tokenization}
+% \drafttermi
+\paragraph{單詞片段（WordPiece）}
+
+WordPiece \cite{wu2016google} 演算法由 Google 用以訓練機器翻譯系統，並在 BERT \cite{devlin_bert_2019} 模型中被使用而廣為人知。與 BPE 同樣是透過反覆合併的策略，但合併的依據改以機率模型取代出現頻率。
+
+\paragraph{單一詞語言模型（Unigram Language Model）}
+
+單一詞語言模型 \cite{kudo2018subword} 是基於語言模型的分詞方法，以機率分佈選擇次詞單位，並以最大化輸入文本的機率來為文本分段。
+
+
+\subsection{句子片段（SentencePiece）套件}
+
+　　
+SentencePiece \cite{kudo_sentencepiece_2018}
+是由 Google 開發的分詞套件，實作了前述的 BPE 和單一詞演算法。其優勢在於可應用於不同語言，尤其用於處理中文、日文等不使用空格分隔單詞的語言文本時，此套件大大的簡化了前處理的流程。
+
+
+
+\section{衡量方式}
+　　
+本章節沿用上一章節 LibriSpeech 資料集的 train-clean-100 訓練子集，以及相同的分析數據以進行比對。由於與上一章節的差異僅在分詞方法的引入，因此
+數據結果
+將多紀錄分詞前後序列長度的變化
+% 一個序列長度縮短的比例
+；
+% 另外，有兩個操控變因是分詞方法與詞表的大小。
+其他操控變因包含分詞方法與詞表大小。
+考慮到語音訊號本身不如英語等文字，在書寫時就已經具備空格分隔單詞，
+因此以下分析結果皆
+% 為了著重比較序列長度與音位之間的關聯性，以下分析結果
+% 的分詞方法統一使用 SentencePiece 套件中的 BPE 演算法
+採用 SentencePiece 套件中實作之
+單一詞演算法為分詞方法
+，並比較詞表大小 500、1000、8000、10000、20000 五種設定的結果差異。（空間不足時則僅呈現 500、1000、10000 三種設定的趨勢。）
+
+% \section{分析結果 \textcolor{red}{(NOT FINISHED)}}
+\section{分析結果}
+
+以下數據中的「長度壓縮比率」係指透過分詞方法後，每一個句子的「單詞」數與原先離散單元的數量相比之比值。由於長度壓縮比率是針對離散單元分詞所得到，與標註無關，因此只在音位分析的表格上呈現。
+
+\subsection{基於各自音位的分析}
+　　
+首先，為了比較不同詞表大小對於純度、相互資訊等數據的影響，先分別固定語音模型為 HuBERT 和 Wav2vec 2.0，
+在離散單元的分群數量為 50、100、200 三種設定下，
+觀察詞表大小造成的變化。
+由 HuBERT （表 \ref{tab:hubert-phn-results}）和 Wav2vec 2.0（表 \ref{tab:w2v2-phn-results}）的數據比較可觀察到，詞表大小上升除了使得音位純度提高以外，相互資訊也是隨之提高的，可以發現
+% 是不是要加上沒 BPE？
+使用分詞方法並給予足夠大的詞表，對於找出語音中的資訊確實有所幫助。
+
+接著從另一個角度切入，比較同樣都是離散單元分群數為 200 的條件下，不同語音基石模型的分析數據。由表 \ref{tab:ch4-models-phn} 可以發現，HuBERT 模型在音位純度與相互資訊勝過其他模型，這個結論與上一章節是一致的。
+
+有趣的是，觀察長度壓縮比率可以發現，CPC 模型在分詞演算法的引入後，能夠使序列變得最短，但同時在音位純度與相互資訊上也有所犧牲；而 HuBERT 雖然在這些分析數據上高過其他三者，卻同時達成了比 Wav2vec 2.0 和 LogMel 更好的壓縮比率。因此綜合看來，或許這是為什麼目前使用語音離散單元進行研究時，HuBERT 模型仍然是領域內的首選。
+
+        \begin{table}[!htbp]
+            \centering
+            \begin{subtable}[t]{\textwidth}
+                \centering
+                \begin{tabular}{|c|c|c|c|c|c|c|} \hline 
+                        詞表大小  & 音位純度 & 分群純度 & 音位熵 & 離散單元熵 &    PNMI & 長度壓縮比率 \\ \hline 
+ 50 (未分詞)& 0.5256& 0.3382& 3.3152& 3.8681& 0.4993&1.0000\\ \hline 
+                           500  &   0.5574   &  0.0829 &   3.3152  &  6.0282 & 0.5357 & 0.3486  \\ \hline %%  1.7758       
+                          1000  &   0.5744   &  0.0556 &   3.3152  &  6.6594 & 0.5466 & 0.2992  \\ \hline %%  1.8120       
+                          8000  &   0.5957   &  0.0257 &   3.3152  &  8.5192 & 0.5729 & 0.2074  \\ \hline %%  1.8993       
+                         10000  &   0.5955   &  0.0238 &   3.3152  &  8.7207 & 0.5750 & 0.2007  \\ \hline %%  1.9063       
+                         20000  &   0.5921   &  0.0182 &   3.3152  &  9.3527 & 0.5820 & 0.1819  \\ \hline %%  1.9293       
+                \end{tabular}
+\caption{群數 = 50}
+                \label{tab:ch4-hubert-phn-clu050}
+            \end{subtable}        
+
+            \jefftablesep        
+
+            \begin{subtable}[t]{\textwidth}
+                \centering
+                \begin{tabular}{|c|c|c|c|c|c|c|} \hline 
+                        詞表大小  & 音位純度 & 分群純度 & 音位熵 & 離散單元熵 &    PNMI & 長度壓縮比率 \\ \hline 
+ 100 (未分詞)& 0.6097& 0.2553& 3.3152& 4.5704& 0.5786&1.0000\\ \hline 
+                           500  &   0.6260   &  0.0972 &   3.3152  &  6.0655 & 0.5990 & 0.4432  \\ \hline %%  1.9858       
+                          1000  &   0.6372   &  0.0631 &   3.3152  &  6.7181 & 0.6089 & 0.3666  \\ \hline %%  2.0186       
+                          8000  &   0.6536   &  0.0237 &   3.3152  &  8.5954 & 0.6308 & 0.2444  \\ \hline %%  2.0912       
+                         10000  &   0.6527   &  0.0219 &   3.3152  &  8.7938 & 0.6324 & 0.2357  \\ \hline %%  2.0965       
+                         20000  &   0.6490   &  0.0173 &   3.3152  &  9.4123 & 0.6378 & 0.2123  \\ \hline %%  2.1145       
+                \end{tabular}
+\caption{群數 = 100}
+                \label{tab:ch4-hubert-phn-clu100}
+            \end{subtable}        
+
+            \jefftablesep        
+
+            \begin{subtable}[t]{\textwidth}
+                \centering
+                \begin{tabular}{|c|c|c|c|c|c|c|} \hline 
+                        詞表大小  & 音位純度 & 分群純度 & 音位熵 & 離散單元熵 &    PNMI & 長度壓縮比率 \\ \hline 
+ 200 (未分詞)& 0.6474& 0.1644& 3.3152& 5.2681& 0.6289&1.0000\\ \hline 
+                           500  &   0.6471   &  0.0930 &   3.3152  &  6.0986 & 0.6314 & 0.5995  \\ \hline %%  2.0934       
+                          1000  &   0.6540   &  0.0558 &   3.3152  &  6.7786 & 0.6382 & 0.4609  \\ \hline %%  2.1156       
+                          8000  &   0.6690   &  0.0208 &   3.3152  &  8.6544 & 0.6567 & 0.2874  \\ \hline %%  2.1769       
+                         10000  &   0.6693   &  0.0189 &   3.3152  &  8.8535 & 0.6584 & 0.2764  \\ \hline %%  2.1826       
+                         20000  &   0.6684   &  0.0144 &   3.3152  &  9.4737 & 0.6636 & 0.2467  \\ \hline %%  2.1999      
+                \end{tabular}
+\caption{群數 = 200}
+                \label{tab:ch4-hubert-phn-clu200}
+            \end{subtable}        
+
+\caption{HuBERT 模型在不同詞表大小時的音位分析數據}
+            \label{tab:hubert-phn-results}
+        \end{table}
+
+\begin{table}[!htbp]
+    \centering
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|c|} \hline 
+                詞表大小  & 音位純度 & 分群純度 & 音位熵 & 離散單元熵 &    PNMI & 長度壓縮比率 \\ \hline 
+ 50 (未分詞)&  0.4006 &   0.2676 & 3.3152 &     3.8215 & 0.3706&1.0000\\ \hline 
+                  500  &   0.4295&     0.0594    &3.3152 &   6.0328  &       0.4027 &0.3943 \\ \hline %%  
+                 1000  &   0.4411&     0.0456    &3.3152 &   6.6250  &       0.4132 &0.3448 \\ \hline %%  
+                 8000  &   0.4676&     0.0239    &3.3152 &   8.4954  &       0.4438 &0.2429 \\ \hline %%  
+                10000  &   0.4705&     0.0227    &3.3152 &   8.6966  &       0.4477 &0.2352 \\ \hline %%  
+                20000  &   0.4753&     0.0185    &3.3152 &   9.3471  &       0.4587 &0.2132 \\ \hline %%  
+        \end{tabular}
+\caption{群數 = 50}
+        \label{tab:ch4-w2v2-phn-clu050}
+    \end{subtable}        
+
+    \jefftablesep        
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|c|} \hline 
+                詞表大小  & 音位純度 & 分群純度 & 音位熵 & 離散單元熵 &    PNMI & 長度壓縮比率 \\ \hline 
+ 100 (未分詞)&0.4877 &   0.2118 & 3.3152 &     4.5284 & 0.4596&1.0000\\ \hline 
+                  500  &   0.5016&     0.0697    &3.3152 &   6.0769  &       0.4784 &0.4926 \\ \hline %%  
+                 1000  &   0.5108&     0.0444    &3.3152 &   6.7265  &       0.4867 &0.4160 \\ \hline %%  
+                 8000  &   0.5427&     0.0215    &3.3152 &   8.5576  &       0.5180 &0.2895 \\ \hline %%  
+                10000  &   0.5451&     0.0203    &3.3152 &   8.7602  &       0.5218 &0.2797 \\ \hline %%  
+                20000  &   0.5531&     0.0162    &3.3152 &   9.4070  &       0.5345 &0.2526 \\ \hline %%  
+        \end{tabular}
+\caption{群數 = 100}
+        \label{tab:ch4-w2v2-phn-clu100}
+    \end{subtable}        
+
+    \jefftablesep        
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|c|} \hline 
+                詞表大小  & 音位純度 & 分群純度 & 音位熵 & 離散單元熵 &    PNMI & 長度壓縮比率 \\ \hline 
+ 200 (未分詞)&  0.5427 &   0.1467 & 3.3152 &     5.2173 & 0.5188 &1.0000\\ \hline 
+                  500  &   0.5481&     0.0846    &3.3152 &   6.0756  &       0.5276 &0.6418 \\ \hline %%  
+                 1000  &   0.5549&     0.0509    &3.3152 &   6.7483  &       0.5347 &0.5178 \\ \hline %%  
+                 8000  &   0.5803&     0.0180    &3.3152 &   8.6065  &       0.5632 &0.3498 \\ \hline %%  
+                10000  &   0.5828&     0.0166    &3.3152 &   8.8136  &       0.5668 &0.3373 \\ \hline %%  
+                20000  &   0.5917&     0.0129    &3.3152 &   9.4561  &       0.5794 &0.3026  \\ \hline %%  
+        \end{tabular}
+\caption{群數 = 200}
+        \label{tab:ch4-w2v2-phn-clu200}
+    \end{subtable}        
+
+\caption{Wav2vec 2.0 模型在不同詞表大小時的音位分析數據}
+    \label{tab:w2v2-phn-results}
+\end{table}
+
+
+
+        \begin{table}[!htbp]
+            \centering
+            \begin{subtable}[t]{\textwidth}
+                \centering
+                \begin{tabular}{|c|c|c|c|c|c|c|} \hline 
+                        詞表大小  & 音位純度 & 分群純度 & 音位熵 & 離散單元熵 &    PNMI & 長度壓縮比率 \\ \hline 
+ 200 (未分詞)&   0.6474 &   0.1644 & 3.3152 &     5.2681 & 0.6289 &1.0000\\ \hline 
+                            500   & 0.6471   & 0.0930   & 3.3152 &  6.0986    &  0.6314 &  0.5995  \\ \hline %%   2.0934
+                           1000   & 0.6540   & 0.0558   & 3.3152 &  6.7786    &  0.6382 &  0.4609  \\ \hline %%   2.1156
+                          10000   & 0.6693   & 0.0189   & 3.3152 &  8.8535    &  0.6584 &  0.2764  \\ \hline %%   2.1826
+                \end{tabular}
+\caption{HuBERT}
+                \label{tab:ch4-phn-model-hubert}
+            \end{subtable}        
+
+            \jefftablesep        
+
+            \begin{subtable}[t]{\textwidth}
+                \centering
+                \begin{tabular}{|c|c|c|c|c|c|c|} \hline 
+                        詞表大小  & 音位純度 & 分群純度 & 音位熵 & 離散單元熵 &    PNMI & 長度壓縮比率 \\ \hline 
+ 200 (未分詞)&   0.5427 &   0.1467 & 3.3152 &     5.2173 &　0.5188 &1.0000\\ \hline 
+                            500   & 0.5481   & 0.0846   & 3.3152 &  6.0756    &  0.5276 &  0.6418  \\ \hline %%   1.7491
+                           1000   & 0.5549   & 0.0509   & 3.3152 &  6.7483    &  0.5347 &  0.5178  \\ \hline %%   1.7727
+                          10000   & 0.5828   & 0.0166   & 3.3152 &  8.8136    &  0.5668 &  0.3373  \\ \hline %%   1.8791
+                \end{tabular}
+\caption{Wav2vec 2.0}
+                \label{tab:ch4-phn-model-w2v2}
+            \end{subtable}        
+
+            
+            \jefftablesep        
+
+            \begin{subtable}[t]{\textwidth}
+                \centering
+                \begin{tabular}{|c|c|c|c|c|c|c|} \hline 
+                        詞表大小  & 音位純度 & 分群純度 & 音位熵 & 離散單元熵 &    PNMI & 長度壓縮比率 \\ \hline 
+ 200 (未分詞)&   0.6098 &   0.1789 & 3.3146 &     5.1885 &　0.5882 &1.0000\\ \hline 
+                            500   & 0.6116   & 0.1048   & 3.3146 &  6.0343    &  0.5936 &  0.4951  \\ \hline %%   1.9677
+                           1000   & 0.6134   & 0.0618   & 3.3146 &  6.7245    &  0.5979 &  0.3523  \\ \hline %%   1.9818
+                          10000   & 0.6198   & 0.0171   & 3.3146 &  8.8593    &  0.6118 &  0.2061  \\ \hline %%   2.0277
+                \end{tabular}
+\caption{CPC}
+                \label{tab:ch4-phn-model-cpc}
+            \end{subtable}        
+
+            \jefftablesep        
+
+            \begin{subtable}[t]{\textwidth}
+                \centering
+                \begin{tabular}{|c|c|c|c|c|c|c|} \hline 
+                        詞表大小  & 音位純度 & 分群純度 & 音位熵 & 離散單元熵 &    PNMI & 長度壓縮比率 \\ \hline 
+ 200 (未分詞)&   0.3474 &   0.0569 & 3.3158 &     5.2322 &　0.2955 &1.0000\\ \hline 
+                            500   & 0.3515   & 0.0403   & 3.3158 &  6.1035    &  0.3066 &  0.6304  \\ \hline %%   1.0166
+                           1000   & 0.3547   & 0.0228   & 3.3158 &  6.7602    &  0.3129 &  0.5185  \\ \hline %%   1.0376
+                          10000   & 0.3699   & 0.0121   & 3.3158 &  8.7579    &  0.3381 &  0.3427  \\ \hline %%   1.1211
+                \end{tabular}
+\caption{LogMel}
+                \label{tab:ch4-phn-model-logmel}
+            \end{subtable}        
+
+\caption{固定離散單元群數皆為 200，不同基石模型的音位分析數據}
+            \label{tab:ch4-models-phn}
+        \end{table}
+        
+\subsection{基於語音學分類的分析}
+
+　　
+最後觀察將語音標註換成語音學分類的結果，一樣可以從表 \ref{tab:hubert-pcls-results}、\ref{tab:w2v2-pcls-results} 和 \ref{tab:ch4-models-pcls} 觀察到與上一小節相同的趨勢。
+
+        \begin{table}[!htbp]
+            \centering
+            \begin{subtable}[t]{\textwidth}
+                \centering
+                \begin{tabular}{|c|c|c|c|c|c|} \hline 
+                        詞表大小  & 標註純度 & 分群純度 & 標註熵 & 離散單元熵 &     NMI   \\ \hline 
+                       50 (未分詞)&   0.7466  &  0.1422 & 1.7530 &   3.8681 &  0.5742 \\ \hline 
+                           500    &  0.7510  &  0.0345  & 1.7530 &  6.0282  &     0.5789  \\ \hline 
+                          1000    &  0.7492  &  0.0225  & 1.7530 &  6.6594  &     0.5756  \\ \hline 
+                          8000    &  0.7288  &  0.0116  & 1.7530 &  8.5192  &     0.5630  \\ \hline 
+                         10000    &  0.7248  &  0.0110  & 1.7530 &  8.7207  &     0.5606  \\ \hline 
+                         20000    &  0.7109  &  0.0089  & 1.7530 &  9.3527  &     0.5537  \\ \hline 
+                \end{tabular}
+\caption{群數 = 50}
+                \label{tab:ch4-hubert-pcls-clu050}
+            \end{subtable}        
+
+            \jefftablesep        
+
+            \begin{subtable}[t]{\textwidth}
+                \centering
+                \begin{tabular}{|c|c|c|c|c|c|} \hline 
+                        詞表大小  & 標註純度 & 分群純度 & 標註熵 & 離散單元熵 &     NMI   \\ \hline 
+ 100 (未分詞)&              0.7804 &   0.0856 &         1.7530 &     4.5704 &  0.6148\\ \hline 
+                           500    &  0.7787  &  0.0300  & 1.7530 &  6.0655  &     0.6178  \\ \hline 
+                          1000    &  0.7751  &  0.0210  & 1.7530 &  6.7181  &     0.6176  \\ \hline 
+                          8000    &  0.7507  &  0.0095  & 1.7530 &  8.5954  &     0.6030  \\ \hline 
+                         10000    &  0.7468  &  0.0087  & 1.7530 &  8.7938  &     0.6008  \\ \hline 
+                         20000    &  0.7347  &  0.0072  & 1.7530 &  9.4123  &     0.5943  \\ \hline 
+                \end{tabular}
+\caption{群數 = 100}
+                \label{tab:ch4-hubert-pcls-clu100}
+            \end{subtable}        
+
+            \jefftablesep        
+
+            \begin{subtable}[t]{\textwidth}
+                \centering
+                \begin{tabular}{|c|c|c|c|c|c|} \hline 
+                        詞表大小  & 標註純度 & 分群純度 & 標註熵 & 離散單元熵 &     NMI   \\ \hline 
+ 200 (未分詞)&              0.8004 &   0.0464 &         1.7530 &     5.2681 &  0.6563\\ \hline 
+                           500    &  0.7875  &  0.0269  & 1.7530 &  6.0986  &     0.6469  \\ \hline 
+                          1000    &  0.7788  &  0.0170  & 1.7530 &  6.7786  &     0.6385  \\ \hline 
+                          8000    &  0.7625  &  0.0071  & 1.7530 &  8.6544  &     0.6266  \\ \hline 
+                         10000    &  0.7601  &  0.0064  & 1.7530 &  8.8535  &     0.6251  \\ \hline 
+                         20000    &  0.7514  &  0.0051  & 1.7530 &  9.4737  &     0.6200   \\ \hline
+                \end{tabular}
+\caption{群數 = 200}
+                \label{tab:ch4-hubert-pcls-clu200}
+            \end{subtable}        
+
+\caption{HuBERT 模型在不同詞表大小時的語音學類別分析數據}
+            \label{tab:hubert-pcls-results}
+        \end{table}
+
+\begin{table}[!htbp]
+    \centering
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|} \hline 
+                詞表大小 & 標註純度 & 分群純度 & 標註熵 & 離散單元熵 &     NMI \\ \hline 
+ 50 (未分詞)&      0.6913 &   0.1570 &         1.7530 &     3.8215 &  0.4682\\ \hline 
+                  500  &  0.7018 &    0.0339 &   1.7530 &   6.0328 &       0.4873  \\ \hline 
+                 1000  &  0.7058 &    0.0273 &   1.7530 &   6.6250 &       0.4913  \\ \hline 
+                 8000  &  0.7041 &    0.0158 &   1.7530 &   8.4954 &       0.4956  \\ \hline 
+                10000  &  0.7033 &    0.0152 &   1.7530 &   8.6966 &       0.4963  \\ \hline 
+                20000  &  0.6961 &    0.0128 &   1.7530 &   9.3471 &       0.4954  \\ \hline 
+        \end{tabular}
+\caption{群數 = 50}
+        \label{tab:ch4-w2v2-pcls-clu050}
+    \end{subtable}        
+
+    \jefftablesep        
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|} \hline 
+                詞表大小 & 標註純度 & 分群純度 & 標註熵 & 離散單元熵 &     NMI \\ \hline 
+ 100 (未分詞)&     0.7219 &   0.0889 &         1.7530 &     4.5284 &  0.5252 \\ \hline 
+                  500  &  0.7142 &    0.0288 &   1.7530 &   6.0769 &       0.5297  \\ \hline 
+                 1000  &  0.7132 &    0.0197 &   1.7530 &   6.7265 &       0.5294  \\ \hline 
+                 8000  &  0.7173 &    0.0108 &   1.7530 &   8.5576 &       0.5352  \\ \hline 
+                10000  &  0.7171 &    0.0105 &   1.7530 &   8.7602 &       0.5360  \\ \hline 
+                20000  &  0.7149 &    0.0089 &   1.7530 &   9.4070 &       0.5379  \\ \hline 
+        \end{tabular}
+\caption{群數 = 100}
+        \label{tab:ch4-w2v2-pcls-clu100}
+    \end{subtable}        
+
+    \jefftablesep        
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|} \hline 
+                詞表大小 & 標註純度 & 分群純度 & 標註熵 & 離散單元熵 &     NMI \\ \hline 
+  200 (未分詞)&     0.7490 &   0.0527 &         1.7530 &     5.2173 &  0.5671  \\ \hline 
+                  500  &  0.7465 &    0.0310 &   1.7530 &   6.0756 &       0.5685  \\ \hline 
+                 1000  &  0.7451 &    0.0199 &   1.7530 &   6.7483 &       0.5692  \\ \hline 
+                 8000  &  0.7405 &    0.0071 &   1.7530 &   8.6065 &       0.5725  \\ \hline 
+                10000  &  0.7399 &    0.0066 &   1.7530 &   8.8136 &       0.5729  \\ \hline 
+                20000  &  0.7391 &    0.0055 &   1.7530 &   9.4561 &       0.5757   \\ \hline
+        \end{tabular}
+\caption{群數 = 200}
+        \label{tab:ch4-w2v2-pcls-clu200}
+    \end{subtable}        
+
+\caption{Wav2vec 2.0 模型在不同詞表大小時的語音學類別分析數據}
+    \label{tab:w2v2-pcls-results}
+\end{table}
+
+
+        \begin{table}[!htbp]
+            \centering
+            \begin{subtable}[t]{\textwidth}
+                \centering
+                \begin{tabular}{|c|c|c|c|c|c|} \hline 
+                        詞表大小  & 標註純度 & 分群純度 & 標註熵 & 離散單元熵 &     NMI  \\ \hline 
+  200 (未分詞)&         0.8004 &   0.0464 &         1.7530 &     5.2681 &  0.6563\\ \hline 
+                            500 &  0.7875 &    0.0269 &   1.7530   & 6.0986 &    0.6469 \\ \hline %%   2.0934
+                           1000 &  0.7788 &    0.0170 &   1.7530   & 6.7786 &    0.6385 \\ \hline %%   2.1156
+                          10000 &  0.7601 &    0.0064 &   1.7530   & 8.8535 &    0.6251 \\ \hline %%   2.1826
+                \end{tabular}
+\caption{HuBERT}
+                \label{tab:ch4-pcls-model-hubert}
+            \end{subtable}        
+
+            \jefftablesep        
+
+            \begin{subtable}[t]{\textwidth}
+                \centering
+                \begin{tabular}{|c|c|c|c|c|c|} \hline 
+                        詞表大小  & 標註純度 & 分群純度 & 標註熵 & 離散單元熵 &     NMI  \\ \hline 
+  200 (未分詞)&         0.7490 &   0.0527 &         1.7530 &     5.2173 &  0.5671 \\ \hline 
+                            500 &  0.7465 &    0.0310 &   1.7530   & 6.0756 &    0.5685 \\ \hline %%   1.7491
+                           1000 &  0.7451 &    0.0199 &   1.7530   & 6.7483 &    0.5692 \\ \hline %%   1.7727
+                          10000 &  0.7399 &    0.0066 &   1.7530   & 8.8136 &    0.5729 \\ \hline %%   1.8791
+                \end{tabular}
+\caption{Wav2vec 2.0}
+                \label{tab:ch4-pcls-model-w2v2}
+            \end{subtable}        
+
+            
+            \jefftablesep        
+
+            \begin{subtable}[t]{\textwidth}
+                \centering
+                \begin{tabular}{|c|c|c|c|c|c|} \hline 
+                        詞表大小  & 標註純度 & 分群純度 & 標註熵 & 離散單元熵 &     NMI  \\ \hline 
+ 200 (未分詞)&         0.7947 &   0.0644 &         1.7530 &     5.1885 &  0.6345 \\ \hline 
+                            500 &  0.7925 &    0.0369 &   1.7530   & 6.0343 &    0.6368 \\ \hline %%   1.9677
+                           1000 &  0.7882 &    0.0223 &   1.7530   & 6.7245 &    0.6349 \\ \hline %%   1.9818
+                          10000 &  0.7609 &    0.0096 &   1.7530   & 8.8593 &    0.6175 \\ \hline %%   2.0277
+                \end{tabular}
+\caption{CPC}
+                \label{tab:ch4-pcls-model-cpc}
+            \end{subtable}        
+
+            \jefftablesep        
+
+            \begin{subtable}[t]{\textwidth}
+                \centering
+                \begin{tabular}{|c|c|c|c|c|c|} \hline 
+                詞表大小 & 標註純度 & 分群純度 & 標註熵 & 離散單元熵 &     NMI \\ \hline 
+  200 (未分詞)&         0.6107 &   0.0335 &         1.7530 &     5.2322 &  0.3652 \\ \hline 
+                            500 &  0.6156 &    0.0247 &   1.7530   & 6.1035 &    0.3801 \\ \hline %%   1.0166
+                           1000 &  0.6189 &    0.0137 &   1.7530   & 6.7602 &    0.3875 \\ \hline %%   1.0376
+                          10000 &  0.6322 &    0.0096 &   1.7530   & 8.7579 &    0.4085 \\ \hline %%   1.1211
+                \end{tabular}
+\caption{LogMel}
+                \label{tab:ch4-pcls-model-logmel}
+            \end{subtable}        
+
+\caption{固定離散單元群數皆為 200，不同基石模型的語音學類別分析數據}
+            \label{tab:ch4-models-pcls}
+        \end{table}
+        
+
+\section{本章總結}
+　　
+藉由分詞演算法的引入，我們可以發現在序列長度相對縮短的前提下，音位的純度卻也獲得了提升，足以證明分詞演算法的引入，可以幫助離散單元考量多於一個音框的語音資訊，建構於精細的音框之上，找出更接近人類解讀語音最小單位資訊。期望以此發現，可以使得語音語言模型建立時，模型在處理語音語料庫時，能夠以更接近文字的序列長度與資訊進行訓練，獲得更接近文字模型的效果。
