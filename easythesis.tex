@@ -106,8 +106,36 @@ commentstyle=\upshape,% 預設是斜體字，會影響註解裏的英文，改�
 
 %%% 以下載入前頁、本文、後頁
 
-\input{thesis_frontpages}
-\input{chapters/realall}
-\input{thesis_backpages}
+
+\newpage
+\setcounter{page}{1}
+\pagenumbering{roman}
+
+
+\input{chapters/all}
+% this file is encoded in utf-8
+% v3.0 (Jun. 11, 2019)
+
+%%% 參考文獻
+\newpage
+\phantomsection % for hyperref to register this
+\addcontentsline{toc}{chapter}{\nameRef}
+\renewcommand{\bibname}{\protect\makebox[5cm][s]{\nameRef}}
+%  \makebox{} is fragile; need protect
+\bibliographystyle{IEEEtran}  % 使用 IEEE Trans 期刊格式
+\bibliography{thesis}
+
+
+%%% 附錄
+%\input{my_appendix.tex}
+
+%%% 自傳
+%\newpage
+%\chapter*{\protect\makebox[5cm][s]{\nameVita}} % \makebox{} is fragile; need protect
+%\phantomsection % for hyperref to register this
+%\addcontentsline{toc}{chapter}{\nameVita}
+%\input{my_vita.tex}
+
+
 
 \end{document}
