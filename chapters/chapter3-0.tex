@@ -1,0 +1,34 @@
+%% textless --> 是不是要補一下模型敘述？
+% 補 citations
+% 順搞，包含表格邊框
+% 算 ratio 有必要嗎？
+% $$ 長條圖分開討論？
+% alignment
+% 換 dev
+
+%%% https://arxiv.org/pdf/2102.01192
+
+% mycites
+% 最後！處理數據作圖…！！ 是要多久……啊就那樣
+% phone type
+
+\newcommand{\jeffcomment}[1]{}
+
+\chapter{單一語音離散表徵與音位的關係}  % 與語音標記的對應模式
+
+　　
+HuBERT \cite{hsu_hubert_2021, hsu_hubert_2021-2} 和 Wav2vec 2.0 \cite{baevski2020wav2vec} 等語音基石模型的成功，不僅在語音任務上達到了前所未有的表現，還促進了語音表徵離散化的發展。由此產生的「無文字（Textless）」架構 \cite{noauthor_textless_2021, lakhotia_generative_2021, lakhotia_generative_2021-1}，讓人們在處理語音訊號時，有了連續表徵以外的新選擇。離散形式的表徵可以直接應用文字領域發展的技術，如機器翻譯、生成式模型等，為語音技術帶來新的突破。另一方面，基於離散「符記（Token）」的共同形式，離散語音表徵可以更好的整合文字資料，促成多模態領域的發展。跨模態離散表徵的成功，甚至驅使影像領域也開始發展離散表徵，\jeffcomment{要確認一下「開始」嗎？}如探討唇語的 AV-HuBERT \cite{shi2021learning} 等等，展現了離散表徵在資料處理上的優勢。
+% 不是模型運算
+% 還有影像的 vokenization \cite{tan-bansal-2020-vokenization} 等等。好像更早
+% TODO: 找到影像那邊的新的 token?
+
+% 語言學那邊只有一般語音？還是包含 acoustic phon 嗎？
+此外，除了技術的角度切入，為了探討離散語音表徵成功背後的可能因素，
+以及它們與語言學對人類語音理解之間的差異，
+甚至是進一步利用這些技術協助更細緻的探討人類的語音現象。
+因此，原先在連續語音表徵上的語音學分析，
+也開始關注離散表徵在多大程度上能描述語音現象，
+將其列入考量，成為除了連續語音特徵和時頻譜之外的另一個選擇。
+% TODO: cite  "is cont necessary? 那篇"
+% 更由於這些離散表徵形式上和音位、文字的相似性，  %% 這個好像還沒？
+%% 他們還是更喜歡 IPA，只是先當成一種新的 label 吧？
