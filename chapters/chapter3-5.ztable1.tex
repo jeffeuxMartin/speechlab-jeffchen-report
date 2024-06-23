@@ -1,0 +1,48 @@
+\begin{table}[!htbp]
+    \centering
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|} \hline
+                        & 音位純度   & 分群純度   & 音位熵    & 離散單元熵  & PNMI   \\ \hline
+            HuBERT      &     0.5256 &     0.3382 &    3.3152 &      3.8681 & 0.4993 \\ \hline    %% 1.6552 h
+            Wav2vec 2.0 &     0.4006 &     0.2676 &    3.3152 &      3.8215 & 0.3706 \\ \hline    %% 1.2286 w
+            CPC         &     0.5188 &     0.3812 &    3.3146 &      3.7918 & 0.4992 \\ \hline    %% 1.6545 c
+            LogMel      &     0.3253 &     0.1473 &    3.3158 &      3.8630 & 0.2647 \\ \hline    %% 0.8776 l 
+        \end{tabular}
+        \caption{群數 = 50}
+        \label{tab:ch3-clu050-phn}
+    \end{subtable}
+
+    \vspace{0.5cm}
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|} \hline
+                        & 音位純度   & 分群純度   & 音位熵    & 離散單元熵  & PNMI   \\ \hline
+            HuBERT      &     0.6097 &     0.2553 &    3.3152 &      4.5704 & 0.5786 \\ \hline    %% 1.9181 h
+            Wav2vec 2.0 &     0.4877 &     0.2118 &    3.3152 &      4.5284 & 0.4596 \\ \hline    %% 1.5235 w
+            CPC         &     0.5895 &     0.2674 &    3.3146 &      4.5034 & 0.5557 \\ \hline    %% 1.8418 c
+            LogMel      &     0.3348 &     0.0931 &    3.3158 &      4.5591 & 0.2789 \\ \hline    %% 0.9247 l 
+        \end{tabular}
+        \caption{群數 = 100}
+        \label{tab:ch3-clu100-phn}
+    \end{subtable}
+
+    \vspace{0.5cm}
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|} \hline
+                        & 音位純度   & 分群純度   & 音位熵    & 離散單元熵  & PNMI   \\ \hline
+            HuBERT      &     0.6474 &     0.1644 &    3.3152 &      5.2681 & 0.6289 \\ \hline    %% 2.0849 h
+            Wav2vec 2.0 &     0.5427 &     0.1467 &    3.3152 &      5.2173 & 0.5188 \\ \hline    %% 1.7199 w
+            CPC         &     0.6098 &     0.1789 &    3.3146 &      5.1885 & 0.5882 \\ \hline    %% 1.9497 c
+            LogMel      &     0.3474 &     0.0569 &    3.3158 &      5.2322 & 0.2955 \\ \hline    %% 0.9798 l 
+        \end{tabular}
+        \caption{群數 = 200}
+        \label{tab:ch3-clu200-phn}
+    \end{subtable}
+
+    \caption{不同群數在四種基石模型的音位分析數據}
+    \label{tab:single-cluster-results}
+\end{table}
