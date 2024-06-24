@@ -1,0 +1,55 @@
+
+\begin{table}[!htbp]
+    \centering
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|} \hline 
+                詞表大小 & 標註純度 & 分群純度 & 標註熵 & 離散單元熵 &     NMI \\ \hline 
+ 50 (未分詞)&      0.6913 &   0.1570 &         1.7530 &     3.8215 &  0.4682\\ \hline 
+                  500  &  0.7018 &    0.0339 &   1.7530 &   6.0328 &       0.4873  \\ \hline 
+                 1000  &  0.7058 &    0.0273 &   1.7530 &   6.6250 &       0.4913  \\ \hline 
+                 8000  &  0.7041 &    0.0158 &   1.7530 &   8.4954 &       0.4956  \\ \hline 
+                10000  &  0.7033 &    0.0152 &   1.7530 &   8.6966 &       0.4963  \\ \hline 
+                20000  &  0.6961 &    0.0128 &   1.7530 &   9.3471 &       0.4954  \\ \hline 
+        \end{tabular}
+\caption{群數 = 50}
+        \label{tab:ch4-w2v2-pcls-clu050}
+    \end{subtable}        
+
+    \jefftablesep        
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|} \hline 
+                詞表大小 & 標註純度 & 分群純度 & 標註熵 & 離散單元熵 &     NMI \\ \hline 
+ 100 (未分詞)&     0.7219 &   0.0889 &         1.7530 &     4.5284 &  0.5252 \\ \hline 
+                  500  &  0.7142 &    0.0288 &   1.7530 &   6.0769 &       0.5297  \\ \hline 
+                 1000  &  0.7132 &    0.0197 &   1.7530 &   6.7265 &       0.5294  \\ \hline 
+                 8000  &  0.7173 &    0.0108 &   1.7530 &   8.5576 &       0.5352  \\ \hline 
+                10000  &  0.7171 &    0.0105 &   1.7530 &   8.7602 &       0.5360  \\ \hline 
+                20000  &  0.7149 &    0.0089 &   1.7530 &   9.4070 &       0.5379  \\ \hline 
+        \end{tabular}
+\caption{群數 = 100}
+        \label{tab:ch4-w2v2-pcls-clu100}
+    \end{subtable}        
+
+    \jefftablesep        
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|} \hline 
+                詞表大小 & 標註純度 & 分群純度 & 標註熵 & 離散單元熵 &     NMI \\ \hline 
+  200 (未分詞)&     0.7490 &   0.0527 &         1.7530 &     5.2173 &  0.5671  \\ \hline 
+                  500  &  0.7465 &    0.0310 &   1.7530 &   6.0756 &       0.5685  \\ \hline 
+                 1000  &  0.7451 &    0.0199 &   1.7530 &   6.7483 &       0.5692  \\ \hline 
+                 8000  &  0.7405 &    0.0071 &   1.7530 &   8.6065 &       0.5725  \\ \hline 
+                10000  &  0.7399 &    0.0066 &   1.7530 &   8.8136 &       0.5729  \\ \hline 
+                20000  &  0.7391 &    0.0055 &   1.7530 &   9.4561 &       0.5757   \\ \hline
+        \end{tabular}
+\caption{群數 = 200}
+        \label{tab:ch4-w2v2-pcls-clu200}
+    \end{subtable}        
+
+\caption{Wav2vec 2.0 模型在不同詞表大小時的語音學類別分析數據}
+    \label{tab:w2v2-pcls-results}
+\end{table}

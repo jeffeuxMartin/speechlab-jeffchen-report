@@ -1,0 +1,66 @@
+
+
+\begin{table}[!htbp]
+    \centering
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|c|} \hline 
+                詞表大小  & 音位純度 & 分群純度 & 音位熵 & 離散單元熵 &    PNMI & 長度壓縮比率 \\ \hline 
+200 (未分詞)&   0.6474 &   0.1644 & 3.3152 &     5.2681 & 0.6289 &1.0000\\ \hline 
+                    500   & 0.6471   & 0.0930   & 3.3152 &  6.0986    &  0.6314 &  0.5995  \\ \hline %%   2.0934
+                   1000   & 0.6540   & 0.0558   & 3.3152 &  6.7786    &  0.6382 &  0.4609  \\ \hline %%   2.1156
+                  10000   & 0.6693   & 0.0189   & 3.3152 &  8.8535    &  0.6584 &  0.2764  \\ \hline %%   2.1826
+        \end{tabular}
+\caption{HuBERT}
+        \label{tab:ch4-phn-model-hubert}
+    \end{subtable}        
+
+    \jefftablesep        
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|c|} \hline 
+                詞表大小  & 音位純度 & 分群純度 & 音位熵 & 離散單元熵 &    PNMI & 長度壓縮比率 \\ \hline 
+200 (未分詞)&   0.5427 &   0.1467 & 3.3152 &     5.2173 &　0.5188 &1.0000\\ \hline 
+                    500   & 0.5481   & 0.0846   & 3.3152 &  6.0756    &  0.5276 &  0.6418  \\ \hline %%   1.7491
+                   1000   & 0.5549   & 0.0509   & 3.3152 &  6.7483    &  0.5347 &  0.5178  \\ \hline %%   1.7727
+                  10000   & 0.5828   & 0.0166   & 3.3152 &  8.8136    &  0.5668 &  0.3373  \\ \hline %%   1.8791
+        \end{tabular}
+\caption{Wav2vec 2.0}
+        \label{tab:ch4-phn-model-w2v2}
+    \end{subtable}        
+
+    
+    \jefftablesep        
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|c|} \hline 
+                詞表大小  & 音位純度 & 分群純度 & 音位熵 & 離散單元熵 &    PNMI & 長度壓縮比率 \\ \hline 
+200 (未分詞)&   0.6098 &   0.1789 & 3.3146 &     5.1885 &　0.5882 &1.0000\\ \hline 
+                    500   & 0.6116   & 0.1048   & 3.3146 &  6.0343    &  0.5936 &  0.4951  \\ \hline %%   1.9677
+                   1000   & 0.6134   & 0.0618   & 3.3146 &  6.7245    &  0.5979 &  0.3523  \\ \hline %%   1.9818
+                  10000   & 0.6198   & 0.0171   & 3.3146 &  8.8593    &  0.6118 &  0.2061  \\ \hline %%   2.0277
+        \end{tabular}
+\caption{CPC}
+        \label{tab:ch4-phn-model-cpc}
+    \end{subtable}        
+
+    \jefftablesep        
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|c|} \hline 
+                詞表大小  & 音位純度 & 分群純度 & 音位熵 & 離散單元熵 &    PNMI & 長度壓縮比率 \\ \hline 
+200 (未分詞)&   0.3474 &   0.0569 & 3.3158 &     5.2322 &　0.2955 &1.0000\\ \hline 
+                    500   & 0.3515   & 0.0403   & 3.3158 &  6.1035    &  0.3066 &  0.6304  \\ \hline %%   1.0166
+                   1000   & 0.3547   & 0.0228   & 3.3158 &  6.7602    &  0.3129 &  0.5185  \\ \hline %%   1.0376
+                  10000   & 0.3699   & 0.0121   & 3.3158 &  8.7579    &  0.3381 &  0.3427  \\ \hline %%   1.1211
+        \end{tabular}
+\caption{LogMel}
+        \label{tab:ch4-phn-model-logmel}
+    \end{subtable}        
+
+\caption{固定離散單元群數皆為 200，不同基石模型的音位分析數據}
+    \label{tab:ch4-models-phn}
+\end{table}
