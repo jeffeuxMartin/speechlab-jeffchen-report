@@ -7,11 +7,15 @@
 
 　　由表 \ref{tab:single-cluster-results} 中可以看出，分群的群數愈多時，音位的純度確實有所上升，但這可能是犧牲分群純度得來的。因此再看 PNMI 的指標可以發現，整體離散單元和音位標註的相關性還是有所提升的。此外，從不同模型來觀察，HuBERT 的表現是四種語音表徵中最好的，一定程度上可以證實 HuBERT 在找出語音中有意義單位上的效能，及其為什麼無文字架構通常以 HuBERT 作為抽取語音離散表徵的模型。
 
-\subsection{基於語音學分類的分析}
+\textcolor{red}{（討論太少應增加尤應增加舉例分析（某一 phoneme 對應到哪些 unit，它們如何分散或集中，不是只看平均值））}
+
+\subsection{基於語音學及其音位分類的分析}
 
 \input{chapters/chapter3-5.ztable2}
 
 　　將表 \ref{tab:single-cluster-phonetype-results} 與音位的表 \ref{tab:single-cluster-results} 進行比較，能看出音位數據表現的趨勢，也能在語音類別中看出來。然而，由於語音類別數明顯少於音位的種類數，因此語音類別標註的純度相較音位會較高。
+
+\textcolor{red}{同樣太少討論，應增加尤其已有 3.3 的分類，尤可依據其 3.3 的類來分析}
 
 \setcounter{section}{4}
 \input{chapters/ch3-5_new}

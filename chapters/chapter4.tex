@@ -7,6 +7,7 @@
 \renewcommand{\arraystretch}{0.7} % 調整行高
 \newcommand{\jefftablesep}{\vspace{0.5cm}}
 
+\textcolor{red}{tokenization 的翻譯需要調整！}
 
 \section{動機}
 　　
@@ -38,7 +39,7 @@
 本論文
 首先將離散單元使用句子片段（SentencePiece） \cite{kudo_sentencepiece_2018} 分詞，獲得新的符記 --- 「聲學片段（Acoustic Piece）」，並用於語音辨識的預訓練上。
 
-不久，由吳氏（Wu）提出的 Wav2seq \cite{wu_wav2seq_2023}\citetag{2-22A5-wav2seq}論文中，考量文字與語音的序列長度差異，並基於離散單元和音位的關聯性，將離散單元視為字符（Character），嘗試將這些字符透過分詞方法組成「偽語言（Pseudo-language\footnote{偽語言對應之離散單元被視為「偽文字（Pseudo-text）」}）」，來幫助語音到文字的模型。因為解碼器在實際應用時需要生成的序列多是文字的符記 --- 次詞單位（Subword Unit），因此該篇研究旨在讓模型在預訓練
+不久，由吳氏（Wu）提出的 Wav2seq \cite{wu_wav2seq_2023}\citetag{2-22A5-wav2seq}論文中，考量文字與語音的序列長度差異，並基於離散單元和音位的關聯性，將離散單元視為字符（Character），嘗試將這些字符透過分詞方法組成「虛擬語言（Pseudo-language\footnote{偽語言對應之離散單元被視為「虛擬文字（Pseudo-text）」}）」，來幫助語音到文字的模型。因為解碼器在實際應用時需要生成的序列多是文字的符記 --- 次詞單位（Subword Unit），因此該篇研究旨在讓模型在預訓練
 % 時可以更適應下游任務。
 後可以快速適應下游任務。
 與前一篇呼應，「聲學片段」對語音預訓練的效果在
