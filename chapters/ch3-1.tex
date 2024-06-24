@@ -64,8 +64,8 @@
 
 　　除了純度提供「最高機率」的對應關係，根據 HuBERT 論文 \cite{hsu_hubert_2021-2} 中的分析方式，我們也可以從資訊理論的角度，觀察兩個序列的熵和相互資訊。
 
-\paragraph{熵（Entropy）}
-
+\paragraph{熵（Entropy）} \hfill \break
+%
 　　熵的定義按照資訊理論，衡量兩個序列中標籤類別出現機率的不確定性（Uncertainty），公式寫作：
 \begin{align}
     H(y) & = \sum_i{p_y(i)\log p_y(i)} \\
@@ -73,8 +73,8 @@
 \end{align}
 其中 $H(y)$ 和 $H(z)$ 分別為音位和離散單元的熵，數值愈高分別表示各種音位和離散單元出現的機率愈平均。
 
-\paragraph{以音位標準化之相互資訊（Phone-normalized Mutual Information，PNMI）}
-
+\paragraph{以音位標準化之相互資訊（Phone-normalized Mutual Information，PNMI）}\hfill \break
+%
 　　本數據以「觀察到某一個離散單元，能降低多少音位標註的不確定性」，定義該離散單元的出現背後提供了多少音位的資訊。公式寫為：
 \begin{align}
     \frac{I(y;z)}{H(y)} & =\cfrac{\sum_i \sum_j p_{yz}(i, j) \log \cfrac{p_{yz}(i, j)}{p_y(i)p_z(j)}}{\sum_i p_y(i) \log p_y(i)} \\
