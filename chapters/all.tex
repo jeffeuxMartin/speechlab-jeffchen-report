@@ -34,13 +34,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 {\mysinglespacing\selectfont
-\tableofcontents
+% \tableofcontents
 \par}
 \newpage\setcounter{page}{1}\pagenumbering{arabic}
 
-\input{chapters/chapter1}
-\mychcnt{2}  %
-\input{chapters/chapter2}
-\input{chapters/chapter3--}
-\input{chapters/chapter4}
-\input{chapters/chapter5}
+\newcommand{\jeffcomment}[1]{}
+
+% \input{chapters/chapter1}
+% \mychcnt{2}  %
+% \input{chapters/chapter2}
+
+\setcounter{page}{23}
+\mychcnt{3}  %
+\input{chapters/chapter3-1}
+\input{chapters/chapter3-5}
+
+% \input{chapters/chapter4}
+% \input{chapters/chapter5}

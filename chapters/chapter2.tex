@@ -30,7 +30,6 @@
     \caption{多層感知器／深層類神經網路示意圖}
     \label{fig:mlp}
 \end{figure}
-
         % 確認那個「大量」跟「應用」有沒有掉字
         藉助深層類神經網路的彈性，我們可以透過大量訓練資料來訓練模型，藉此逼近應用任務中欲近似的函數 $f$，該函數蘊藏在資料集 $\mathcal{D} = \{(x_i, y_i)\}_{i=1}^N$ 中，其中每個資料點 $(x_i, y_i)$ 為輸入與輸出間的配對，即對於 $N$ 個資料點都有 
 \begin{align}
@@ -84,11 +83,7 @@
 
 \subsubsection{遞迴式類神經網路}
 
-　　遞迴式類神經網路（Recurrent Neural Network，RNN）常用於處理隨時間變化的序列資料，特別是語音與文字等等，順序資訊相當關鍵的各種語言任務。
-
-        為了處理需要記憶和狀態的資料類型，遞迴式類神經網路的輸出會重新接回輸入層，使得前一個時間點（Timestep）的資料與內部狀態會繼續影響後續的時間點。
-
-        常用的遞迴式類神經網路類型有長短期記憶（Long Short-term Memory，LSTM）\cite{hochreiter1997long} 和閘門循環單元（Gated Recurrent Unit，GRU）\cite{cho-etal-2014-properties} 等。
+　　遞迴式類神經網路（Recurrent Neural Network，RNN）常用於處理隨時間變化的序列資料，特別是語音與文字等等，順序資訊相當關鍵的各種語言任務。為了處理需要記憶和狀態的資料類型，遞迴式類神經網路的輸出會重新接回輸入層，使得前一個時間點（Timestep）的資料與內部狀態會繼續影響後續的時間點。常用的遞迴式類神經網路類型有長短期記憶（Long Short-term Memory，LSTM）\cite{hochreiter1997long} 和閘門循環單元（Gated Recurrent Unit，GRU）\cite{cho-etal-2014-properties} 等。
 
         遞迴式類神經網路通常用在處理序列至序列的應用，例如語音辨識、語音合成或機器翻譯等和語言密切相關的任務中。
 
@@ -111,13 +106,13 @@
         轉換器類神經網路一般包含編碼器和解碼器兩部分，均為多層架構。圖 \ref{fig:tfm_arch} 展示完整的轉換器架構圖，以下分別介紹其主要元件：
 
 \paragraph{位置編碼（Positional Encoding）}
-
+\hfill \break
 　　對於編碼器或解碼器的輸入序列，模型先對序列中不同位置的時間點進行編碼，取代遞迴式類神經網路逐步運算的過程，使其能在平行計算的同時考慮不同時間點的影響。編碼的函數可依照需求變換，如原始的轉換器採用三角函數進行位置編碼，而在語音模型中，有時也會採用卷積式網路以捕捉輸入的細微資訊。
 
         經過位置編碼後，向量會通過每一個轉換器層（Transformer Layer），進行以多頭專注（Multi-head Attention）為主的一連串運算：
 
 \paragraph{多頭專注}
-
+\hfill \break
 　　轉換器層中的專注機制涉及三個輸入向量：詢向量（Query）$Q$、鑰向量（Key）$K$ 和值向量（Value）$V$。專注機制運算如下：
 \begin{align}
     \text{Attention}(Q, K, V) = \text{softmax}
@@ -139,7 +134,7 @@
 \end{align}
 
 \paragraph{其他層內運算}
-
+\hfill \break
 　　每層轉換器層在經過多頭專注運算後，會依序進行以下三個步驟：
 
 \begin{enumerate}
@@ -151,7 +146,7 @@
         以上為轉換器被提出時的最原始模型，其後對殘差連接、層正規化的安排也存在各類變體。
 
 \paragraph{跨專注機制（Cross-atttention）}
-
+\hfill \break
 　　由於解碼器需要來自編碼器的輸入序列資訊幫助輸出，因此，原本在編碼器層中的自專注機制，在解碼器中會再經過一次跨專注機制的運算，使用編碼器提供的詢向量和鑰向量對解碼器的值向量進行專注運算。
 
 \begin{figure}
