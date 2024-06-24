@@ -36,12 +36,12 @@
 　　位元組對編碼 \cite{10.5555/177910.177914, sennrich_neural_2016} 是一種常用的分詞方法，最初來自資料壓縮技術 \cite{10.5555/177910.177914}，後來被引入到自然語言處理領域，用以處理機器翻譯問題 \cite{sennrich_neural_2016} 。
 該演算法從字元開始，根據詞彙表中各個次詞單位的頻率，反覆合併常見的字元成為新的次詞單位，直到達到預定的詞彙表大小。
 
-\paragraph{單詞片段（WordPiece）}\hfill \break
-
+\paragraph{單詞片段（WordPiece）} \hfill \break
+%
 　　WordPiece \cite{wu2016google} 演算法由 Google 用以訓練機器翻譯系統，並在 BERT \cite{devlin_bert_2019} 模型中被使用而廣為人知。與 BPE 同樣是透過反覆合併的策略，但合併的依據改以機率模型取代出現頻率。
 
-\paragraph{單一詞語言模型（Unigram Language Model）}\hfill \break
-
+\paragraph{單一詞語言模型（Unigram Language Model）} \hfill \break
+%
 　　單一詞語言模型 \cite{kudo2018subword} 是基於語言模型的分詞方法，以機率分佈選擇次詞單位，並以最大化輸入文本的機率來為文本分段。
 
 \subsection{句子片段（SentencePiece）套件}
