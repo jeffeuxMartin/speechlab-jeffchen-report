@@ -168,7 +168,7 @@
 
         對於抽象的語言概念，早期工程領域根據對語音和文字的理解，分別進行了不同的處理。對於離散且可計數的文字，人們使用詞頻統計衍生出如 n 連詞（n-gram）、TF-IDF（Term-Frequency Inverse Document Frequency）等特徵作為模型學習的前處理步驟；而對於連續且複雜的語音，工程師則透過聲學原理與訊號處理的知識，使用如濾波器組（Filter Bank）、梅爾倒頻譜係數（Mel-Frequency Cepstrum Coefficient，MFCC）等特徵，類比人耳捕捉語音訊號的過程。
 
-        在深層學習逐漸發展的過程中，自然語言處理領域的一大里程碑是米氏（Mikolov）提出的「word2vec」模型 \cite{mikolov_efficient_2013}，該模型以連續的向量表徵（Vector Representation）取代稀疏（Sparse）的統計數據，對離散的文字單詞進行「詞嵌入（Word Embedding）」編碼。通過大量文本運算，將各單詞之間的共現（Collocation）以跳躍詞（Skip-gram）、連續詞袋（Continuous Bag-of-Word，CBOW）等演算法轉換成高維向量空間中的點，找出每個單詞最適合的語義表徵。爾後，為了更細緻地捕捉同一單詞在不同句子中的脈絡變化，ELMo（Embeddings from Language Model）\cite{peters_deep_2018} 提出了「含上下文詞嵌入（Contextualized Embedding）」的概念，使得各單詞在運算表徵的過程中可以根據上下文進行些微調整。
+        在深層學習逐漸發展的過程中，自然語言處理領域的一大里程碑是米氏（Mikolov）提出的「Word2vec」模型 \cite{mikolov_efficient_2013}，該模型以連續的向量表徵（Vector Representation）取代稀疏（Sparse）的統計數據，對離散的文字單詞進行「詞嵌入（Word Embedding）」編碼。通過大量文本運算，將各單詞之間的共現（Collocation）以跳躍詞（Skip-gram）、連續詞袋（Continuous Bag-of-Word，CBOW）等演算法轉換成高維向量空間中的點，找出每個單詞最適合的語義表徵。爾後，為了更細緻地捕捉同一單詞在不同句子中的脈絡變化，ELMo（Embeddings from Language Model）\cite{peters_deep_2018} 提出了「含上下文詞嵌入（Contextualized Embedding）」的概念，使得各單詞在運算表徵的過程中可以根據上下文進行些微調整。
 
 \subsection{自監督學習}
 
