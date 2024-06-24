@@ -31,17 +31,17 @@
 
 　　以下介紹幾種常見的分詞方法：
 
-\paragraph{位元組對編碼（Byte Pair Encoding，BPE）}
-\hfill \break
+\paragraph{位元組對編碼（Byte Pair Encoding，BPE）}\hfill \break
+
 　　位元組對編碼 \cite{10.5555/177910.177914, sennrich_neural_2016} 是一種常用的分詞方法，最初來自資料壓縮技術 \cite{10.5555/177910.177914}，後來被引入到自然語言處理領域，用以處理機器翻譯問題 \cite{sennrich_neural_2016} 。
 該演算法從字元開始，根據詞彙表中各個次詞單位的頻率，反覆合併常見的字元成為新的次詞單位，直到達到預定的詞彙表大小。
 
-\paragraph{單詞片段（WordPiece）}
-\hfill \break
+\paragraph{單詞片段（WordPiece）}\hfill \break
+
 　　WordPiece \cite{wu2016google} 演算法由 Google 用以訓練機器翻譯系統，並在 BERT \cite{devlin_bert_2019} 模型中被使用而廣為人知。與 BPE 同樣是透過反覆合併的策略，但合併的依據改以機率模型取代出現頻率。
 
-\paragraph{單一詞語言模型（Unigram Language Model）}
-\hfill \break
+\paragraph{單一詞語言模型（Unigram Language Model）}\hfill \break
+
 　　單一詞語言模型 \cite{kudo2018subword} 是基於語言模型的分詞方法，以機率分佈選擇次詞單位，並以最大化輸入文本的機率來為文本分段。
 
 \subsection{句子片段（SentencePiece）套件}
@@ -53,10 +53,7 @@
 
 　　本章節沿用上一章節 LibriSpeech 資料集的 train-clean-100 訓練子集，以及相同的分析數據以進行比對。由於與上一章節的差異僅在分詞方法的引入，因此數據結果將多紀錄分詞前後序列長度的變化；其他操控變因包含分詞方法與詞表大小。考慮到語音訊號本身不如英語等文字，在書寫時就已經具備空格分隔單詞，因此以下分析結果皆採用 SentencePiece 套件中實作之單一詞演算法為分詞方法，並比較詞表大小 500、1000、8000、10000、20000 五種設定的結果差異。（空間不足時則僅呈現 500、1000、10000 三種設定的趨勢。）
 
-\renewcommand{\arraystretch}{0.7} % 調整行高
-\newcommand{\jefftablesep}{\vspace{0.5cm}}
-
-\section{分析結果}
+\section{分析結果}\newcommand{\jefftablesep}{\vspace{0.5cm}}\renewcommand{\arraystretch}{0.7} % 調整行高
 
     以下數據中的「長度壓縮比率」係指透過分詞方法後，每一個句子的「單詞」數與原先離散單元的數量相比之比值。由於長度壓縮比率是針對離散單元分詞所得到，與標註無關，因此只在音位分析的表格上呈現。
 
@@ -68,13 +65,13 @@
 
         有趣的是，觀察長度壓縮比率可以發現，CPC 模型在分詞演算法的引入後，能夠使序列變得最短，但同時在音位純度與相互資訊上也有所犧牲；而 HuBERT 雖然在這些分析數據上高過其他三者，卻同時達成了比 Wav2vec 2.0 和 LogMel 更好的壓縮比率。因此綜合看來，或許這是為什麼目前使用語音離散單元進行研究時，HuBERT 模型仍然是領域內的首選。
 
-\input{tables/chapter4/tab1}
+                \input{tables/chapter4/tab1}
 
 \subsection{基於語音學分類的分析}
 
 　　最後觀察將語音標註換成語音學分類的結果，一樣可以從表 \ref{tab:hubert-pcls-results}、\ref{tab:w2v2-pcls-results} 和 \ref{tab:ch4-models-pcls} 觀察到與上一小節相同的趨勢。
 
-\input{tables/chapter4/tab2}
+                \input{tables/chapter4/tab2}
 
 \section{本章總結}
 
