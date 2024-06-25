@@ -75,10 +75,10 @@
 
 - 首先請修改 title\_settings.tex 並確定裡面的 **所有欄位** 都是正確的
 - 所有的內文都是修改 chapters 資料夾下的檔案，其中 chapters/all.tex 是大架構
-- 文中可能會用到符號縮寫指令可定義在 notations.tex
+- 文中可能會用到符號縮寫指令可定義在 z__utils/functions/notations.tex
 - thesis\_frontpages.tex → 誌謝與摘要
 - thesis.bib → 參考文獻的 bib 檔 (把各種 bibtex 貼進去，然後用 `\cite` 來引用)
-- headerfooter.tex → 可以對頁首頁尾多加一些東西，使用 fancyhdr。(但是這個建議是別動...)
+- z__utils/functions/headerfooter.tex → 可以對頁首頁尾多加一些東西，使用 fancyhdr。(但是這個建議是別動...)
 
 若有圖片的話可以建立一個 images 的資料夾並把圖片全部放在裡面。
 
