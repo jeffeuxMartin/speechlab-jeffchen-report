@@ -1,0 +1,23 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+[branch "master"]
+	remote = github
+	merge = refs/heads/master
+[remote "origin"]
+	url = https://git.overleaf.com/666f18119a8582777f8f1c8a
+	fetch = +refs/heads/*:refs/remotes/origin/*
+	pushurl = https://git:olp_4E3JZks3oMdn4xhqOIyDFEhRRVP9xG0ZBAtn@git.overleaf.com/666f18119a8582777f8f1c8a
+[remote "github"]
+	url = https://git@github.com/jeffeuxMartin/speechlab-jeffchen-report
+	fetch = +refs/heads/*:refs/remotes/github/*
+	pushurl = https://git@github.com/jeffeuxMartin/speechlab-jeffchen-report
+	pushurl = https://git:olp_4E3JZks3oMdn4xhqOIyDFEhRRVP9xG0ZBAtn@git.overleaf.com/666f18119a8582777f8f1c8a
+[branch "main"]
+	vscode-merge-base = origin/master
+	remote = github
+	merge = refs/heads/main
