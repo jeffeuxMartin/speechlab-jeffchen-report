@@ -137,16 +137,19 @@
 
 
 
-}% \section{model、個案}
+}  % \section{model、個案}
 
 \section{⚛️ 分析方式 ⚛️}
 
 　　針對模型得出之離散單元與音位標註之間的對應關係，為了使得分析可以更直觀的展示，我們將音位與離散單元的聯合機率分佈 \(p_{yz}\) 用熱圖（Heatmap）呈現。這裡以 HuBERT 為基石模型、離散單元分群數為 100 的統計數據為例，圖 \ref{fig:joint-byprob-hub100} 說明我們如何分析語音離散表徵與音位標註的關係。
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=1\linewidth]{figures/joint_sortby_prphn-hub-100.png}
-    \caption{HuBERT 模型、群數 = 100 之 \\ 離散單元與音位標註的聯合機率分佈圖}
-    \label{fig:joint-byprob-hub100}
-\end{figure}
+    {    
+        \begin{figure}[ht]
+            \centering
+            \includegraphics[width=1\linewidth]{figures/joint_sortby_prphn-hub-100.png}
+            \caption{HuBERT 模型、群數 = 100 之 \\ 
+            離散單元與音位標註的聯合機率分佈圖}
+            \label{fig:joint-byprob-hub100}
+        \end{figure} 
+    }
         圖中的縱軸表示各個音位，橫軸表示各個離散單元。在這張圖中，縱軸的音位是按照其邊際機率 \(p_y(i)\) 由高至低排序；橫軸的離散單元則是依據其對應的最高機率音位 \(y^\ast(j)\) 的縱軸排序位置進行排列。\footnote{如果兩個離散單元 \(j_1\) 和 \(j_2\) 對應到相同的音位 \(y^\ast = y^\ast(j_1) = y^\ast(j_2)\)，則依照機率值 \(p_{yz}(y^\ast, j_1)\) 和 \(p_{yz}(y^\ast, j_2)\) 由高到低進行排序，對於多個離散單元的情況以此類推。} 這樣可以在熱圖上呈現出由左上至右下的對應關係。
+
