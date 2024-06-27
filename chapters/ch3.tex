@@ -100,7 +100,14 @@
         
         透過將音位分組後，形成新的語音標註，並重新分析統計指標，觀察在純度等數據是否顯示離散單元與語音的發音方式具有更明確的關聯性。
 
+\section{[[ Write here! ]]}
 
+
+{
+%%%%%%%%%% write here
+}  % 單一語音離散表徵與音位的關係
+
+\setcounter{section}{4}
 \section{實驗集與分析模型}
 
 　　本研究的分析對象參考無文字架構 \cite{noauthor_textless_2021, lakhotia_generative_2021, lakhotia_generative_2021-1} 的研究，
@@ -118,3 +125,53 @@
         本論文以 LibriSpeech train-clean-100 作為分析對象，將語音語料庫的語音資料經過四個模型獲取連續表徵後，再經過量化模型得到完全由離散單元組成的「虛擬文字」語料。
 
         本論文針對語音學的音位標註，透過強迫對齊器（Forced-aligner）\footnote{https://github.com/MontrealCorpusTools/Montreal-Forced-Aligner}的英語預訓練模型，從語料庫的文字轉寫取得語音資料的音位標註與對應的時間範圍。最後透過語音表徵各自的時間解析度生成以音框為單位的音位標註語料。最後將兩者對語音資料集進行音位標註相關性的分析。
+
+
+\setcounter{section}{4}
+
+\section{分析結果 (New)}
+
+{
+
+
+
+\begin{figure}\centering
+    \includegraphics[width=1\linewidth]{figures/better__p_ph_given_un.png}\caption{HuBERT 100}\label{p_p_given_u-hub-100}
+\end{figure}
+
+
+}
+
+　　為了更直觀的了解模型離散單元與音素之間的對應關係，接下來的分析將把音素與單元的聯合分佈 \(p(p|u)\) 作圖呈現，如 \ref{p_p_given_u-hub-100} 所示。以下說明這張圖表的看法：
+
+        橫軸是各單元，而縱軸是各音素，按照發音分組方式，輔音遵循國際音標的圖表排列，元音則按照 ARPABET (cite CMU Dict) 字母順序排列。由於離散單元編號本身並無特殊含義，因此當單元數太多時將省略。
+
+        為了更好的看出各組別之間的關係，圖表上先將各組之間以橫線區分。按照語音學分組後，為了考慮單元之間的代表性，將每個單元都找出相對應最高機率的音素，接著將每個單元亦依照對應音素在縱軸的排列順序一一排列，若是遇到對應同一音素的兩種離散單元，則以 \(p(u|p) \) 由高至低排列。最後再橫軸上也以語音學分組區分。
+
+        如此一來，便能夠呈現出一張由左上至右下的對應圖。這張圖在 (cite DinoSR) 等 paper 也有呈現。從圖中可以看出，用來編碼 sil 的 unit 其實佔據了不小的部分。
+
+\setcounter{section}{4}
+
+\section{分析結果}
+
+\subsection{基於各自音位的分析}
+
+\input{tables/chapter3/chapter3-5.ztable1}
+
+　　由表 \ref{tab:single-cluster-results} 中可以看出，分群的群數愈多時，音位的純度確實有所上升，但這可能是犧牲分群純度得來的。因此再看 PNMI 的指標可以發現，整體離散單元和音位標註的相關性還是有所提升的。此外，從不同模型來觀察，HuBERT 的表現是四種語音表徵中最好的，一定程度上可以證實 HuBERT 在找出語音中有意義單位上的效能，及其為什麼無文字架構通常以 HuBERT 作為抽取語音離散表徵的模型。
+
+\textcolor{red}{（討論太少應增加尤應增加舉例分析（某一 phoneme 對應到哪些 unit，它們如何分散或集中，不是只看平均值））}
+
+\subsection{基於語音學及其音位分類的分析}
+
+\input{tables/chapter3/chapter3-5.ztable2}
+
+　　將表 \ref{tab:single-cluster-phonetype-results} 與音位的表 \ref{tab:single-cluster-results} 進行比較，能看出音位數據表現的趨勢，也能在語音類別中看出來。然而，由於語音類別數明顯少於音位的種類數，因此語音類別標註的純度相較音位會較高。
+
+\textcolor{red}{同樣太少討論，應增加尤其已有 3.3 的分類，尤可依據其 3.3 的類來分析}
+
+\section{本章總結}
+
+　　本章節探討以音框為單位取出的語音離散表徵與對應的音位標註之間的關係，從分析結果中可以看到，HuBERT 模型的離散表徵確實與人類理解的語音單位「音位」之間具有最明顯的相似性，也進一步證明為何 HuBERT 是抽取語音離散表徵時最常使用的模型。
+
+        然而，單一離散表徵僅能代表 10 或 20 毫秒的語音訊號，而音位的長度經常佔據不只一個離散表徵。因此，下一章節將進一步組合多個離散表徵成為符記，分析它們與音位之間的關係。
