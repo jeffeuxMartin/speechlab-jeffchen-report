@@ -107,7 +107,7 @@
 　　除了單一音位本身的特性以外，由於音位之間存在相似的特徵，可以分成幾個組別。這裡依照希氏（Sicherman） \cite{10097097}、阿氏（Abdullah）\cite{abdullah23_interspeech} 等前作的分組方式，對英語的音位進行分類。如此一來，
 除了單純把音位標註以約 40 類完全獨立的標籤看待，
 還能夠觀察這些離散單元是否有擷取到相似的發聲特徵。
-首先，按照發音過程氣流是否受到阻礙，因此可否形成獨立的音節，音位可以分為輔音與元音兩大類。
+首先，按照發音過程氣流是否受到阻礙，因此可否形成獨立的音節，音位可以分為輔音與元音兩大類，而後再根據發音的細部特性共分成七組。
 
 \paragraph{輔音（Consonant）} \hfill \break
 %
@@ -134,66 +134,7 @@
 
 另外，為了方便統計與作圖，這些音位在圖中並非以語言學慣用之國際音標（International Phonetic Alphabet，IPA）\cite{international1999handbook}，而是參考語音處理領域常用的「卡內基梅隆大學發音辭典（Carnegie Mellon University Pronouncing Dictionary，CMUDict）\cite{noauthor_cmu_nodate}」，取用其中的 ARPABet 表示法 \cite{klautau2001arpabet}，以避免字母以外的符號在處理上的困難。表 \ref{tab:ipa1}、\ref{tab:ipa2} 中列有更詳細的音位資訊\footnote{範例單詞取自 CMUDict 官網說明。}。
 
-\newcommand{\myipatablename}[0]{英語音位的 ARPABet 表示法和音位分類資訊}
-
-\begin{table}
-    \centering
-    \begin{tabular}{|c|c|c|c|c|} \hline
-        音位 & ARPABet 表示法 & 音位分類 & 範例單詞 & 範例單詞的音位\\ \hline
-/\textipa{A}/ & AA & 單元音 & odd  &   AA D \\ \hline
-/\textipa{\ae}/ & AE & 單元音 & at & AE T \\ \hline
-/\textipa{2}/ & AH & 單元音 & hut &     HH AH T \\ \hline
-/\textipa{O}/ & AO & 單元音 & ought &   AO T \\ \hline
-/a\textipa{U}/ & AW & 雙元音 & cow &     K AW \\ \hline
-/a\textipa{I}/ & AY & 雙元音 & hide &    HH AY D \\ \hline
-/b/  & B  & 塞音 & be & B IY \\ \hline
-/t\textesh/ & CH & 塞擦音 & cheese &  CH IY Z \\ \hline
-/d/  & D  & 塞音 & dee &     D IY \\ \hline
-/\textipa{\dh}/ & DH & 擦音 & thee &    DH IY \\ \hline
-/\textipa{E}/ & EH & 單元音 & Ed & EH D \\ \hline
-/\textrhookrevepsilon/ & ER & 單元音 & hurt &    HH ER T \\ \hline
-/\textipa{E}\textipa{I}/ & EY & 雙元音 & ate &     EY T \\ \hline
-/f/  & F  & 擦音 & fee &     F IY \\ \hline
-/\textscriptg/  & G  & 塞音 & green &   G R IY N \\ \hline
-/h/ & HH & 擦音 & he & HH IY \\ \hline
-/\textipa{I}/ & IH & 單元音 & it & IH T \\ \hline
-/i/ & IY & 單元音 & eat &     IY T \\ \hline
-/d\textyogh/ & JH & 塞擦音 & gee &     JH IY \\ \hline
-    \end{tabular}
-    \caption{\myipatablename }
-    \label{tab:ipa1}
-\end{table}
-
-\begin{table}
-    \centering
-    \begin{tabular}{|c|c|c|c|c|} \hline
-        音位 & ARPABet 表示法 & 音位分類 & 範例單詞 & 範例單詞的音位\\ \hline
-/k/  & K  & 塞音 & key &     K IY \\ \hline
-/l/  & L  & 近音 & lee &     L IY \\ \hline
-/m/  & M  & 鼻音 & me & M IY \\ \hline
-/n/  & N  & 鼻音 & knee &    N IY \\ \hline
-/\textipa{N}/ & NG & 鼻音 & ping &    P IH NG \\ \hline
-/\textschwa\textipa{U}/ & OW & 雙元音 & oat &     OW T \\ \hline
-/\textipa{O}\textipa{I}/ & OY & 雙元音 & toy &     T OY \\ \hline
-/p/  & P  & 塞音 & pee &     P IY \\ \hline
-/r/  & R  & 近音 & read &    R IY D \\ \hline
-/s/  & S  & 擦音 & sea &     S IY \\ \hline
-/\textesh/ & SH & 擦音 & she &     SH IY \\ \hline
-/t/  & T  & 塞音 & tea &     T IY \\ \hline
-/\texttheta/ & TH & 擦音 & theta &   TH EY T AH \\ \hline
-/\textipa{U}/ & UH & 單元音 & hood &    HH UH D \\ \hline
-/u/ & UW & 單元音 & two &     T UW \\ \hline
-/v/  & V  & 擦音 & vee &     V IY \\ \hline
-/w/  & W  & 近音 & we & W IY \\ \hline
-/j/  & Y  & 近音 & yield &   Y IY L D \\ \hline
-/z/  & Z  & 擦音 & zee &     Z IY \\ \hline
-/\textyogh/ & ZH & 擦音 & seizure & S IY ZH ER \\ \hline
-
-    \end{tabular}
-    \caption{\myipatablename（續）}
-    \label{tab:ipa2}
-\end{table}
-
+\input{tables/chapter3/ipatable}
 \section{實驗集與分析模型}
 
 　　本研究的分析對象參考無文字架構 \cite{noauthor_textless_2021, lakhotia_generative_2021, lakhotia_generative_2021-1} 的研究，
