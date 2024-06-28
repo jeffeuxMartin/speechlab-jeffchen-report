@@ -30,7 +30,7 @@
 
         與此對應，藉由強迫對齊器（Forced-Aligner）或人工標註，可以獲得該段語句的音素標註（Phonetic Label）。然而，通常音素標註是以每個音位的起始至終止的時間點配上此時間段的音位類別呈現。因此，為了配合語音表徵對語句的處理方式，這段音素標註會被依照時間點對應的範圍在音框上對齊，成為 $\boldsymbol{y} = [y_1, \cdots\cdots, y_T]$ 的形式以便分析與後續處理。
 
-        為方便具體說明，吾人從語音常用的 LibriSpeech \cite{panayotov_librispeech_2015} 公開資料集中取一段音檔\footnote{取自 train-clean-100 訓練子集，編號 89-218-0056，即編號 89 語者在章節編號 218 中第 56 句。}，放上波形與音框的對照在圖 \ref{fig:enter-labelwav} 呈現。 該段語句內容為 "... what means could it..." ，上方兩個橫列為單詞標註、音位標註。接下來四個橫列中，可以看見第三與第五個橫列將語句切割成以 20 毫秒為單位的片段，此即前面所述之音框。第三列為 HuBERT 模型分群數 100 所得之離散單元序列，而第五列則是由第二列的音位標註片段按照所對應的時間段，分別對齊到音框上的音素標註。由於音位的長度通常長於一個音框，因此在離散單元和音框音素標註在呈現上習慣將標註類別相同的音框合在一起成為長短不一但更接近時間發音的時間段，分別標在第四與第六列之上。
+        為方便具體說明，吾人從語音常用的 LibriSpeech \cite{panayotov_librispeech_2015} 公開資料集中取一段音檔\footnote{取自 train-clean-100 訓練子集，編號 89-218-0056，即編號 89 語者在章節編號 218 中第 56 句。}，放上波形與音框的對照在圖 \ref{fig:enter-labelwav} 呈現。 該段語句內容為 "... what means could it..." ，上方兩個橫列為單詞標註、音位標註 \footnote{ARPABet 表示法，是以純字母表示的音位表示法}。接下來四個橫列中，可以看見第三與第五個橫列將語句切割成以 20 毫秒為單位的片段，此即前面所述之音框。第三列為 HuBERT 模型分群數 100 所得之離散單元序列，而第五列則是由第二列的音位標註片段按照所對應的時間段，分別對齊到音框上的音素標註。由於音位的長度通常長於一個音框，因此在離散單元和音框音素標註在呈現上習慣將標註類別相同的音框合在一起成為長短不一但更接近時間發音的時間段，分別標在第四與第六列之上。
         \begin{figure}
             \centering
             \includegraphics[width=1\linewidth]{figures/praat.png}
@@ -132,7 +132,7 @@
         
         透過將音位分成以上七組後，並重新分析統計指標，以觀察這些分組的規律如何在離散單元的出現機率上呈現，進而顯示離散單元是否與語音的發音方式具有一定的關聯性。
 
-另外，為了方便統計與作圖，這些音位在圖中並非以語言學慣用之國際音標（International Phonetic Alphabet，IPA）\mycite{IPA}，而是參考語音處理領域常用的「卡內基梅隆大學辭典（Carnegie Mellon University Dictionary，CMUDict）\mycite{CMUDict}」，取用其中的 ARPABet 表示法 \mycite{arpabet?}，以避免字母以外的符號在處理上的困難。表 \ref{tab:ipa1}、\ref{tab:ipa1} 中列有更詳細的音位資訊。
+另外，為了方便統計與作圖，這些音位在圖中並非以語言學慣用之國際音標（International Phonetic Alphabet，IPA）\mycite{IPA}，而是參考語音處理領域常用的「卡內基梅隆大學發音辭典（Carnegie Mellon University Pronouncing Dictionary，CMUDict）\mycite{CMUDict}」，取用其中的 ARPABet 表示法 \mycite{arpabet?}，以避免字母以外的符號在處理上的困難。表 \ref{tab:ipa1}、\ref{tab:ipa1} 中列有更詳細的音位資訊。
 
 
 \begin{table}
