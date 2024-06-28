@@ -30,7 +30,7 @@
 
         與此對應，藉由強迫對齊器（Forced-Aligner）或人工標註，可以獲得該段語句的音素標註（Phonetic Label）。然而，通常音素標註是以每個音位的起始至終止的時間點配上此時間段的音位類別呈現。因此，為了配合語音表徵對語句的處理方式，這段音素標註會被依照時間點對應的範圍在音框上對齊，成為 $\boldsymbol{y} = [y_1, \cdots\cdots, y_T]$ 的形式以便分析與後續處理。
 
-        為方便具體說明，吾人從語音常用的 LibriSpeech \cite{panayotov_librispeech_2015} 公開資料集中取一段音檔\footnote{取自 train-clean-100 訓練子集，編號 89-218-0056，即編號 89 語者在章節編號 218 中第 56 句。}，放上波形與音框的對照在圖 \ref{fig:enter-labelwav} 呈現。 該段語句內容為 "... what means could it..." ，上方兩個橫列為單詞標註、音位標註 \footnote{ARPABet 表示法，是以純字母表示的音位表示法}。接下來四個橫列中，可以看見第三與第五個橫列將語句切割成以 20 毫秒為單位的片段，此即前面所述之音框。第三列為 HuBERT 模型分群數 100 所得之離散單元序列，而第五列則是由第二列的音位標註片段按照所對應的時間段，分別對齊到音框上的音素標註。由於音位的長度通常長於一個音框，因此在離散單元和音框音素標註在呈現上習慣將標註類別相同的音框合在一起成為長短不一但更接近時間發音的時間段，分別標在第四與第六列之上。
+        為方便具體說明，吾人從語音常用的 LibriSpeech \cite{panayotov_librispeech_2015} 公開資料集中取一段音檔\footnote{取自 train-clean-100 訓練子集，編號 89-218-0056，即編號 89 語者在章節編號 218 中第 56 句。}，放上波形與音框的對照在圖 \ref{fig:enter-labelwav} 呈現。 該段語句內容為 "... what means could it..." ，上方兩個橫列為單詞標註、音位標註 \footnote{ARPABet 表示法，是以純字母表示的音位表示法。介紹音位分類的章節會對此詳細描述。音位中的數字表示重音。}。接下來四個橫列中，可以看見第三與第五個橫列將語句切割成以 20 毫秒為單位的片段，此即前面所述之音框。第三列為 HuBERT 模型分群數 100 所得之離散單元序列，而第五列則是由第二列的音位標註片段按照所對應的時間段，分別對齊到音框上的音素標註。由於音位的長度通常長於一個音框，因此在離散單元和音框音素標註在呈現上習慣將標註類別相同的音框合在一起成為長短不一但更接近時間發音的時間段，分別標在第四與第六列之上。
         \begin{figure}
             \centering
             \includegraphics[width=1\linewidth]{figures/praat.png}
@@ -138,27 +138,27 @@
 
 \begin{table}
     \centering
-    \begin{tabular}{ccccc}
-        音位 & ARPABet 表示法 & 音位分類 & 範例單詞 & 範例單詞的音位\\
-/\textipa{A}/ & AA & 單元音 & odd  &   AA D \\
-/\textipa{\ae}/ & AE & 單元音 & at & AE T \\
-/\textipa{2}/ & AH & 單元音 & hut &     HH AH T \\
-/\textipa{O}/ & AO & 單元音 & ought &   AO T \\
-/a\textipa{U}/ & AW & 雙元音 & cow &     K AW \\
-/a\textipa{I}/ & AY & 雙元音 & hide &    HH AY D \\
-/b/  & B  & 塞音 & be & B IY \\
-/t\textesh/ & CH & 塞擦音 & cheese &  CH IY Z \\
-/d/  & D  & 塞音 & dee &     D IY \\
-/\textipa{\dh}/ & DH & 擦音 & thee &    DH IY \\
-/\textipa{E}/ & EH & 單元音 & Ed & EH D \\
-/\textrhookrevepsilon/ & ER & 單元音 & hurt &    HH ER T \\
-/\textipa{E}\textipa{I}/ & EY & 雙元音 & ate &     EY T \\
-/f/  & F  & 擦音 & fee &     F IY \\
-/\textscriptg/  & G  & 塞音 & green &   G R IY N \\
-/h/ & HH & 擦音 & he & HH IY \\
-/\textipa{I}/ & IH & 單元音 & it & IH T \\
-/i/ & IY & 單元音 & eat &     IY T \\
-/d\textyogh/ & JH & 塞擦音 & gee &     JH IY \\
+    \begin{tabular}{|c|c|c|c|c|}
+        音位 & ARPABet 表示法 & 音位分類 & 範例單詞 & 範例單詞的音位\\ \hline
+/\textipa{A}/ & AA & 單元音 & odd  &   AA D \\ \hline
+/\textipa{\ae}/ & AE & 單元音 & at & AE T \\ \hline
+/\textipa{2}/ & AH & 單元音 & hut &     HH AH T \\ \hline
+/\textipa{O}/ & AO & 單元音 & ought &   AO T \\ \hline
+/a\textipa{U}/ & AW & 雙元音 & cow &     K AW \\ \hline
+/a\textipa{I}/ & AY & 雙元音 & hide &    HH AY D \\ \hline
+/b/  & B  & 塞音 & be & B IY \\ \hline
+/t\textesh/ & CH & 塞擦音 & cheese &  CH IY Z \\ \hline
+/d/  & D  & 塞音 & dee &     D IY \\ \hline
+/\textipa{\dh}/ & DH & 擦音 & thee &    DH IY \\ \hline
+/\textipa{E}/ & EH & 單元音 & Ed & EH D \\ \hline
+/\textrhookrevepsilon/ & ER & 單元音 & hurt &    HH ER T \\ \hline
+/\textipa{E}\textipa{I}/ & EY & 雙元音 & ate &     EY T \\ \hline
+/f/  & F  & 擦音 & fee &     F IY \\ \hline
+/\textscriptg/  & G  & 塞音 & green &   G R IY N \\ \hline
+/h/ & HH & 擦音 & he & HH IY \\ \hline
+/\textipa{I}/ & IH & 單元音 & it & IH T \\ \hline
+/i/ & IY & 單元音 & eat &     IY T \\ \hline
+/d\textyogh/ & JH & 塞擦音 & gee &     JH IY \\ \hline
     \end{tabular}
     \caption{\myipatablename }
     \label{tab:ipa1}
@@ -166,28 +166,28 @@
 
 \begin{table}
     \centering
-    \begin{tabular}{ccccc}
-        音位 & ARPABet 表示法 & 音位分類 & 範例單詞 & 範例單詞的音位\\
-/k/  & K  & 塞音 & key &     K IY \\
-/l/  & L  & 近音 & lee &     L IY \\
-/m/  & M  & 鼻音 & me & M IY \\
-/n/  & N  & 鼻音 & knee &    N IY \\
-/\textipa{N}/ & NG & 鼻音 & ping &    P IH NG \\
-/\textschwa\textipa{U}/ & OW & 雙元音 & oat &     OW T \\
-/\textipa{O}\textipa{I}/ & OY & 雙元音 & toy &     T OY \\
-/p/  & P  & 塞音 & pee &     P IY \\
-/r/  & R  & 近音 & read &    R IY D \\
-/s/  & S  & 擦音 & sea &     S IY \\
-/\textesh/ & SH & 擦音 & she &     SH IY \\
-/t/  & T  & 塞音 & tea &     T IY \\
-/\texttheta/ & TH & 擦音 & theta &   TH EY T AH \\
-/\textipa{U}/ & UH & 單元音 & hood &    HH UH D \\
-/u/ & UW & 單元音 & two &     T UW \\
-/v/  & V  & 擦音 & vee &     V IY \\
-/w/  & W  & 近音 & we & W IY \\
-/j/  & Y  & 近音 & yield &   Y IY L D \\
-/z/  & Z  & 擦音 & zee &     Z IY \\
-/\textyogh/ & ZH & 擦音 & seizure & S IY ZH ER \\
+    \begin{tabular}{|c|c|c|c|c|}
+        音位 & ARPABet 表示法 & 音位分類 & 範例單詞 & 範例單詞的音位\\ \hline
+/k/  & K  & 塞音 & key &     K IY \\ \hline
+/l/  & L  & 近音 & lee &     L IY \\ \hline
+/m/  & M  & 鼻音 & me & M IY \\ \hline
+/n/  & N  & 鼻音 & knee &    N IY \\ \hline
+/\textipa{N}/ & NG & 鼻音 & ping &    P IH NG \\ \hline
+/\textschwa\textipa{U}/ & OW & 雙元音 & oat &     OW T \\ \hline
+/\textipa{O}\textipa{I}/ & OY & 雙元音 & toy &     T OY \\ \hline
+/p/  & P  & 塞音 & pee &     P IY \\ \hline
+/r/  & R  & 近音 & read &    R IY D \\ \hline
+/s/  & S  & 擦音 & sea &     S IY \\ \hline
+/\textesh/ & SH & 擦音 & she &     SH IY \\ \hline
+/t/  & T  & 塞音 & tea &     T IY \\ \hline
+/\texttheta/ & TH & 擦音 & theta &   TH EY T AH \\ \hline
+/\textipa{U}/ & UH & 單元音 & hood &    HH UH D \\ \hline
+/u/ & UW & 單元音 & two &     T UW \\ \hline
+/v/  & V  & 擦音 & vee &     V IY \\ \hline
+/w/  & W  & 近音 & we & W IY \\ \hline
+/j/  & Y  & 近音 & yield &   Y IY L D \\ \hline
+/z/  & Z  & 擦音 & zee &     Z IY \\ \hline
+/\textyogh/ & ZH & 擦音 & seizure & S IY ZH ER \\ \hline
 
     \end{tabular}
     \caption{\myipatablename（續）}
