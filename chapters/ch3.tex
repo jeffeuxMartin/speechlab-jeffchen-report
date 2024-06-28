@@ -22,28 +22,29 @@
 　　由於語音處理本身最終是針對人類語音，因此有一群研究者通過對人類語音的理解，將這些知識應用在分析模型如何對語音訊號建構表徵之上\cite{deseyssel22_interspeech, wells_phonetic_2022, 10097097, abdullah23_interspeech} 。基於這些作品對語音離散表徵的興趣和探討，本論文也先透過過往幾個常用來分析語音表徵的方式，特別是 HuBERT \cite{hsu_hubert_2021-2} 提出的標準進行初步的分析。
 
 
-\section{衡量方式 (TODO: wav)}
+\section{衡量方式}
 
-　　本次研究主要探討純度（Purity）、熵（Entropy）和相互資訊（Mutual Information，MI）等指標，這些指標在 HuBERT 中被採用 \cite{hsu_hubert_2021, hsu_hubert_2021-2}，用以比對機器學習過程中得到的虛擬標註與人類標註之間的相關性（Correlation）。以下對各標準進行詳細解釋：
+　　本次研究主要探討純度（Purity）、熵（Entropy）和相互資訊（Mutual Information，MI）等指標，這些指標在 HuBERT 中被採用 \cite{hsu_hubert_2021, hsu_hubert_2021-2}，用以比對機器學習過程中得到的虛擬標註與人類標註之間的相關性（Correlation），接下來將詳細解釋這些指標的定義。
 
-        不論是何種語音基石模型，語音表徵的基本單位是音框（Frame）。因此一段語句（Utterance）的語音離散單元被表示為 $[z_1, \cdots\cdots, z_T]$。其中 $T$ 是該段語句的音框總數。對於該段語句，若給予一段在音框上對齊的音素標註（Phonetic Label） $[y_1, \cdots\cdots, y_T]$。
-        %%%%%%%%%%%%%%%%%
-        %% 放上 demo of waveform %%
-        例如給予一段音訊，我們可以這樣呈現 unit 和 phn label 的樣貌 (???)；
-        
+        包含聲學特徵與語音基石模型，不論採用何種方式獲得語音表徵，語音訊號皆是以音框（Frame）為基本單位進行處理。具體而言，給予一段聲音訊號，語音處理系統會將這段訊號按照固定時間切割成多個片段分別處理，這些片段的長度被稱之為時間解析度（Time Resolution）。因此，對於任意一段語句（Utterance），系統會將訊號轉換成一連串的向量 $\boldsymbol{x} = [x_1, \cdots\cdots, x_T]$ 作為語音表徵，其中 $T$ 是該段語句的音框總數，與該語句的時長成比例。其中，第 $t$ 個向量 \(x_t\) 表示第 $t$ 個音框的語音訊號內容。在離散表徵的研究中，每個語音表徵向量 $x_t$ 透過向量量化（Vector Quantization）程序，對應到編碼簿中的某個碼字 $e_{z_t}$。因此，該段語句將被表示為 $\boldsymbol{z} = [z_1, \cdots\cdots, z_T]$ 的離散單元序列。
+
+        與此對應，藉由強迫對齊器（Forced-Aligner）或人工標註，可以獲得該段語句的音素標註（Phonetic Label）。然而，通常音素標註是以每個音位的起始至終止的時間點配上此時間段的音位類別呈現。因此，為了配合語音表徵對語句的處理方式，這段音素標註會被依照時間點對應的範圍在音框上對齊，成為 $\boldsymbol{y} = [y_1, \cdots\cdots, y_T]$ 的形式以便分析與後續處理。
+
+        為方便具體說明，吾人從語音常用的 LibriSpeech \cite{panayotov_librispeech_2015} 公開資料集中取一段音檔\footnote{取自 train-clean-100 訓練子集，編號 89-218-0056，即編號 89 語者在章節編號 218 中第 56 句。}，放上波形與音框的對照在圖 \ref{fig:enter-labelwav} 呈現。 該段語句內容為 "... what means could it..." ，上方兩個橫列為單詞標註、音位標註。接下來四個橫列中，可以看見第三與第五個橫列將語句切割成以 20 毫秒為單位的片段，此即前面所述之音框。第三列為 HuBERT 模型分群數 100 所得之離散單元序列，而第五列則是由第二列的音位標註片段按照所對應的時間段，分別對齊到音框上的音素標註。由於音位的長度通常長於一個音框，因此在離散單元和音框音素標註在呈現上習慣將標註類別相同的音框合在一起成為長短不一但更接近時間發音的時間段，分別標在第四與第六列之上。
         \begin{figure}
             \centering
-            \includegraphics[width=1\linewidth]{figures/wav.png}
-            \caption{wav}
+            \includegraphics[width=1\linewidth]{figures/praat.png}
+            \caption{以音框對齊的離散單元與音素標註範例}
             \label{fig:enter-labelwav}
         \end{figure}
         %%%%%%%%%%%%%%%%%
-        此時我們可以將離散單元與標註之間配對的出現次數，寫為一個雙變數的共同分佈（Joint Distribution）
+        
+        此時若將整個待分析資料集的語音訊號全部蒐集起來，一共有 $T'$ 個音框，如此可分別獲得一個離散單元序列 $\boldsymbol{z} = \{z_t\}_{t=1}^{T'}$ 與音素標註序列 $\boldsymbol{y} = \{y_t\}_{t=1}^{T'}$ 進行統計分析。我們可以根據離散單元與標註之間配對的出現次數，寫為一個雙變數的共同分佈（Joint Distribution）
 \begin{align}
-    p_{yz} = \frac{\sum^T_{t=1}[{y_t = i \wedge z_t = j}]}{T}
+    p_{yz} = \frac{\sum^{T'}_{t=1}[{y_t = i \wedge z_t = j}]}{T'}
 \end{align}
 
-其中 $i$ 是第 $i$ 個音位類別，而 $j$ 指編號為$j$的離散單元。兩個變數的邊際機率（Marginal Probability）分別為
+其中 $i$ 是第 $i$ 個音位類別，而 $j$ 指編號為 $j$ 的離散單元。兩個變數的邊際機率（Marginal Probability）分別為
 \begin{align}
     p_z(j) & =\sum_i{p_{yz}(i, j)} \\
     p_y(i) & =\sum_j{p_{yz}(i, j)}
@@ -56,7 +57,7 @@
 \begin{align}
     y^\ast(j) = \arg\max_i p_{yz}(i,j)
 \end{align}
-透過這些定義，以下分節介紹將要用來分析的指標：
+透過這些定義，以下分節介紹將要用來分析的指標。
 
 \subsection{純度}
 
@@ -64,7 +65,7 @@
 
 \paragraph{音位純度（Phoneme Purity）}\hfill \break
 %
-        考慮每個離散單元對應的音位中，最高機率音位的機率，表示為
+　　考慮每個離散單元對應的音位中，最高機率音位的機率，表示為
 \begin{align}
     \mathbb{E}_{p_z(j)}\left[p_{y|z}(y^*(j)|j) \right]
 \end{align}
@@ -72,7 +73,7 @@
 
 \paragraph{分群純度（Cluster Purity）}\hfill \break
 %
-        與音位純度相對，改以每個音位的角度，考慮對應單元類別的機率
+　　與音位純度相對，改以每個音位的角度，考慮對應單元類別的機率
 \begin{align}
     \mathbb{E}_{p_y(i)}\left[p_{z|y}(z^*(i)|i) \right]
 \end{align}
@@ -103,7 +104,16 @@
 
 \section{語音學的音位分類（Phoneme Type）}
 
-　　除了單一音位本身的特性以外，由於音位之間存在相似的特徵，可以分成幾個組別。這裡依照希氏（Sicherman） \cite{10097097}、阿氏（Abdullah）\cite{abdullah23_interspeech} 等前作的分組方式，對英語的音位進行分類並合併比對數據，觀察這些離散單元是否有擷取到相似的發聲特徵，而不單純只是把音位分成約 50 類完全獨立的標籤。以下簡介七個音位組別：
+　　除了單一音位本身的特性以外，由於音位之間存在相似的特徵，可以分成幾個組別。這裡依照希氏（Sicherman） \cite{10097097}、阿氏（Abdullah）\cite{abdullah23_interspeech} 等前作的分組方式，對英語的音位進行分類。如此一來，
+除了單純把音位標註以約 40 類完全獨立的標籤看待，
+還能夠觀察這些離散單元是否有擷取到相似的發聲特徵。
+首先，按照發音過程氣流是否受到阻礙，因此可否形成獨立的音節，音位可以分為輔音與元音兩大類。
+
+\paragraph{輔音（Consonant）} \hfill \break
+%
+　　
+輔音是指透過阻擋氣流發聲的音位，因此通常不單獨構成音節，
+按照發音方式可分為以下五個類別：
         
         \begin{itemize}
             \item 塞音（Plosive）：以完全阻塞氣流的方式發音的音位，包含 /p/、/b/、/t/、/d/、/k/、/g/ 六種。
@@ -111,11 +121,67 @@
             \item 塞擦音（Affricate）：由塞音和同部位的擦音同時發出的輔音，英語中只有 /t\textesh/ 和 /d\textyogh/ 兩種，即 ch 和 j 的發音。
             \item 鼻音（Nasal）：使氣流通過鼻腔形成的聲音，有 /m/、/n/、/ŋ/ (ng) 三種。
             \item 近音（Approximant）：又稱半元音，為介於元音和輔音之間的聲音，有 /j/ (為 y 作為輔音時的發音)、/r/、/l/、/w/ 四種。
-            \item 元音（Vowel）：可自成音節的音位，包含發音位置固定的單元音（Monophthong）和會移動的的雙元音（Diphthong）兩類，通常以 a、e、i、o、u 字母產生的聲音皆屬於此類別。 \footnote{元音在往後章節分析時，會區分成兩個類別。}  % 可能有更好的寫法去處理單雙母音
         \end{itemize}
-        
-        透過將音位分組後，形成新的語音標註，並重新分析統計指標，觀察在純度等數據是否顯示離散單元與語音的發音方式具有更明確的關聯性。
 
+\paragraph{元音（Vowel）} \hfill \break
+%
+　　
+與之相對，元音則是不阻礙氣流通過，因此可自成音節的音位。其中又可分為發音位置固定的單元音（Monophthong）和會移動發音位置的的雙元音（Diphthong）兩類。通常以 a、e、i、o、u 字母產生的聲音皆屬於此類別。
+
+
+        
+        透過將音位分成以上七組後，並重新分析統計指標，以觀察這些分組的規律如何在離散單元的出現機率上呈現，進而顯示離散單元是否與語音的發音方式具有一定的關聯性。
+
+另外，為了方便統計與作圖，這些音位在圖中並非以語言學慣用之國際音標（International Phonetic Alphabet，IPA）\mycite{IPA}，而是參考語音處理領域常用的「卡內基梅隆大學辭典（Carnegie Mellon University Dictionary，CMUDict）\mycite{CMUDict}」，取用其中的 ARPABet 表示法 \mycite{arpabet?}，以避免字母以外的符號在處理上的困難。表 \ref{tab:ipa} 列有更詳細的音位資訊。
+
+
+\begin{table}
+    \centering
+    \begin{tabular}{ccccc}
+        音位 & ARPABet 表示法 & 音位分類 & 範例單詞 & 範例單詞的音位\\
+AA & AA &	odd     AA D \\
+AE & AE &	at &	AE T \\
+AH & AH &	hut &	HH AH T \\
+AO & AO &	ought &	AO T \\
+AW & AW &	cow &	K AW \\
+AY & AY &	hide &	HH AY D \\
+B  & B  &	be &	B IY \\
+CH & CH &	cheese &	CH IY Z \\
+D  & D  &	dee &	D IY \\
+DH & DH &	thee &	DH IY \\
+EH & EH &	Ed &	EH D \\
+ER & ER &	hurt &	HH ER T \\
+EY & EY &	ate &	EY T \\
+F  & F  &	fee &	F IY \\
+G  & G  &	green &	G R IY N \\
+HH & HH &	he &	HH IY \\
+IH & IH &	it &	IH T \\
+IY & IY &	eat &	IY T \\
+JH & JH &	gee &	JH IY \\
+K  & K  &	key &	K IY \\
+L  & L  &	lee &	L IY \\
+M  & M  &	me &	M IY \\
+N  & N  &	knee &	N IY \\
+NG & NG &	ping &	P IH NG \\
+OW & OW &	oat &	OW T \\
+OY & OY &	toy &	T OY \\
+P  & P  &	pee &	P IY \\
+R  & R  &	read &	R IY D \\
+S  & S  &	sea &	S IY \\
+SH & SH &	she &	SH IY \\
+T  & T  &	tea &	T IY \\
+TH & TH &	theta &	TH EY T AH \\
+UH & UH &	hood &	HH UH D \\
+UW & UW &	two &	T UW \\
+V  & V  &	vee &	V IY \\
+W  & W  &	we &	W IY \\
+Y  & Y  &	yield &	Y IY L D \\
+Z  & Z  &	zee &	Z IY \\
+ZH & ZH &	seizure &	S IY ZH ER \\
+    \end{tabular}
+    \caption{Caption}
+    \label{tab:ipa}
+\end{table}
 
 \section{實驗集與分析模型}
 
@@ -131,9 +197,9 @@
 
         我們跟隨拉氏等人所提出的無文字架構 \cite{lakhotia_generative_2021-1} ，使用該篇論文中釋出之預訓練模型與 K-平均量化模型，預訓練模型的設定細節於原論文有更詳細的描述，而量化模型則是拉氏等人透過公開的 LibriSpeech 資料集 \cite{panayotov_librispeech_2015} 中之 train-clean-100 訓練子集，獲取語音表徵後執行 K-平均分群演算法所得，並釋出群數為 50、100 和 200 的三個版本。
 
-        本論文以 LibriSpeech train-clean-100 作為分析對象，將語音語料庫的語音資料經過四個模型獲取連續表徵後，再經過量化模型得到完全由離散單元組成的「虛擬文字」語料。
-
-        本論文針對語音學的音位標註，透過強迫對齊器（Forced-aligner）\footnote{https://github.com/MontrealCorpusTools/Montreal-Forced-Aligner}的英語預訓練模型，從語料庫的文字轉寫取得語音資料的音位標註與對應的時間範圍。最後透過語音表徵各自的時間解析度生成以音框為單位的音位標註語料。最後將兩者對語音資料集進行音位標註相關性的分析。
+        本論文以 LibriSpeech 之 train-clean-100 訓練子集作為分析對象，將語音語料庫的語音資料經過四個模型得到連續表徵後，再經過量化模型得到完全由離散單元組成的「虛擬文字」語料。
+        至於音位標註的取得，則是透過強迫對齊器\footnote{https://github.com/MontrealCorpusTools/Montreal-Forced-Aligner}的英語預訓練模型，將語料庫的文字轉寫
+        轉換為帶有對應時間範圍的音位標註資料，並依據各自語音表徵的時間解析度，生成以音框對齊的音位標註語料，隨後進行相關性的分析。
 
 
 
@@ -141,16 +207,17 @@
 
 \section{⚛️ 分析方式 ⚛️}
 
-　　針對模型得出之離散單元與音位標註之間的對應關係，為了使得分析可以更直觀的展示，我們將音位與離散單元的聯合機率分佈 \(p_{yz}\) 用熱圖（Heatmap）呈現。這裡以 HuBERT 為基石模型、離散單元分群數為 100 的統計數據為例，圖 \ref{fig:joint-byprob-hub100} 說明我們如何分析語音離散表徵與音位標註的關係。
+　　針對模型得出之離散單元與音位標註之間的對應關係，為了使得分析可以更直觀的展示，我們將音位與離散單元的共同機率分佈 \(p_{yz}\) 用熱圖（Heatmap）呈現。這裡以 HuBERT 為基石模型、離散單元分群數為 100 的統計數據為例，圖 \ref{fig:joint-byprob-hub100} 說明我們如何分析語音離散表徵與音位標註的關係。
     {    
         \begin{figure}[ht]
             \centering
             \includegraphics[width=1\linewidth]{figures/joint_sortby_prphn-hub-100.png}
             \caption{HuBERT 模型、群數 = 100 之 \\ 
-            離散單元與音位標註的聯合機率分佈圖}
+            離散單元與音位標註的共同機率分佈圖}
             \label{fig:joint-byprob-hub100}
         \end{figure} 
     }
         圖中的縱軸表示各個音位，橫軸表示各個離散單元。在這張圖中，縱軸的音位是按照其邊際機率 \(p_y(i)\) 由高至低排序；橫軸的離散單元則是依據其對應的最高機率音位 \(y^\ast(j)\) 的縱軸排序位置進行排列。\footnote{如果兩個離散單元 \(j_1\) 和 \(j_2\) 對應到相同的音位 \(y^\ast = y^\ast(j_1) = y^\ast(j_2)\)，則依照機率值 \(p_{yz}(y^\ast, j_1)\) 和 \(p_{yz}(y^\ast, j_2)\) 由高到低進行排序，對於多個離散單元的情況以此類推。} 這樣可以在熱圖上呈現出由左上至右下的對應關係。
 
         對於離散單元抽取的過程，
+我們會希望模型的離散單元可以更加集中的
