@@ -154,7 +154,7 @@
 
 \paragraph{跨專注機制（Cross-atttention）} \hfill \break
 %
-　　解碼器為了輸出資訊，需要來自編碼器的輸入序列，因此原本在編碼器層中的自專注機制，在解碼器中會再經過一次跨專注機制的運算，使用編碼器提供的詢向量和鑰向量對解碼器的值向量進行專注運算。
+　　為了輸出結果，解碼器需要編碼器提供輸入序列的資訊。因此，原本在編碼器層中的自專注機制，在解碼器中會再經過一次跨專注機制的運算，使用編碼器提供的詢向量和鑰向量對解碼器的值向量進行專注運算。
 \begin{figure}
     \centering
     \includegraphics[width=0.9\linewidth]{figures/tfm_arch.drawio.png}
