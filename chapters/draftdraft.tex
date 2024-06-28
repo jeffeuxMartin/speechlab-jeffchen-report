@@ -1,0 +1,11 @@
+在評估 unit encode 系統的效果時，我們關注的重點是兩個方面：
+1. 每個 unit 所代表的 phn 越集中越好。
+2. 每個 phn 由越少的 unit 代表越好，這樣看到某個 unit 時，幾乎可以確定它代表哪個 phn。
+
+這兩個指標可以通過圖上的顏色深淺來直觀地解釋兩個 purity 的意義：
+* phn purity 是每個 column 取最大值後相加。
+* unit purity 則是每個 row 取最大值後的 pxy 總和。
+
+可以看出，unit purity 受限於最多只能取 41 個 pxy 的總和。而當 cluster 數量增加時，phn purity 能取到的 pxy 總和也會增加。當 cluster 數量與 frame 數量相同時，phn purity 可達到 100\%。
+
+另一方面，隨著 cluster 數量增加，每個格子的 pxy 會因為 unit 數量增加而被稀釋，但 unit purity 的 pxy 總和會被 phn 數量限制。因此，cluster 增加時，unit purity 會降低，這一點也可以觀察到。
