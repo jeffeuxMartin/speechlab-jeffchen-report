@@ -132,9 +132,10 @@
         
         透過將音位分成以上七組後，並重新分析統計指標，以觀察這些分組的規律如何在離散單元的出現機率上呈現，進而顯示離散單元是否與語音的發音方式具有一定的關聯性。
 
-另外，為了方便統計與作圖，這些音位在圖中並非以語言學慣用之國際音標（International Phonetic Alphabet，IPA）\cite{international1999handbook}，而是參考語音處理領域常用的「卡內基梅隆大學發音辭典（Carnegie Mellon University Pronouncing Dictionary，CMUDict）\cite{noauthor_cmu_nodate}」，取用其中的 ARPABet 表示法 \cite{klautau2001arpabet}，以避免字母以外的符號在處理上的困難。表 \ref{tab:ipa1}、\ref{tab:ipa1} 中列有更詳細的音位資訊。
+另外，為了方便統計與作圖，這些音位在圖中並非以語言學慣用之國際音標（International Phonetic Alphabet，IPA）\cite{international1999handbook}，而是參考語音處理領域常用的「卡內基梅隆大學發音辭典（Carnegie Mellon University Pronouncing Dictionary，CMUDict）\cite{noauthor_cmu_nodate}」，取用其中的 ARPABet 表示法 \cite{klautau2001arpabet}，以避免字母以外的符號在處理上的困難。表 \ref{tab:ipa1}、\ref{tab:ipa2} 中列有更詳細的音位資訊\footnote{範例單詞取自 CMUDict 官網說明。}。
 
-\newcommand{\myipatablename}{英語音位的 ARPABet 表示法和音位分類資訊}
+\newcommand{\myipatablename}[0]{英語音位的 ARPABet 表示法和音位分類資訊}
+
 \begin{table}
     \centering
     \begin{tabular}{ccccc}
@@ -159,7 +160,7 @@
 /i/ & IY & 單元音 & eat &     IY T \\
 /d\textyogh/ & JH & 塞擦音 & gee &     JH IY \\
     \end{tabular}
-    \caption{\myipatablename{} \footnote{取自 CMUDict 官網說明}}
+    \caption{\myipatablename }
     \label{tab:ipa1}
 \end{table}
 
@@ -189,7 +190,7 @@
 /\textyogh/ & ZH & 擦音 & seizure & S IY ZH ER \\
 
     \end{tabular}
-    \caption{\myipatablename{}（續）}
+    \caption{\myipatablename（續）}
     \label{tab:ipa2}
 \end{table}
 
