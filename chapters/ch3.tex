@@ -22,7 +22,7 @@
 　　由於語音處理本身最終是針對人類語音，因此有一群研究者通過對人類語音的理解，將這些知識應用在分析模型如何對語音訊號建構表徵之上\cite{deseyssel22_interspeech, wells_phonetic_2022, 10097097, abdullah23_interspeech} 。基於這些作品對語音離散表徵的興趣和探討，本論文也先透過過往幾個常用來分析語音表徵的方式，特別是 HuBERT \cite{hsu_hubert_2021-2} 提出的標準進行初步的分析。
 
 
-\section{衡量方式}
+\section{衡量指標}
 
 　　本次研究主要探討純度（Purity）、熵（Entropy）和相互資訊（Mutual Information，MI）等指標，這些指標在 HuBERT 中被採用 \cite{hsu_hubert_2021, hsu_hubert_2021-2}，用以比對機器學習過程中得到的虛擬標註與人類標註之間的相關性（Correlation），接下來將詳細解釋這些指標的定義。
 
@@ -135,6 +135,7 @@
 另外，為了方便統計與作圖，這些音位在圖中並非以語言學慣用之國際音標（International Phonetic Alphabet，IPA）\cite{international1999handbook}，而是參考語音處理領域常用的「卡內基梅隆大學發音辭典（Carnegie Mellon University Pronouncing Dictionary，CMUDict）\cite{noauthor_cmu_nodate}」，取用其中的 ARPABet 表示法 \cite{klautau2001arpabet}，以避免字母以外的符號在處理上的困難。表 \ref{tab:ipa1}、\ref{tab:ipa2} 中列有更詳細的音位資訊\footnote{範例單詞取自 CMUDict 官網說明。}。
 
 \input{tables/chapter3/ipatable}
+
 \section{實驗集與分析模型}
 
 　　本研究的分析對象參考無文字架構 \cite{noauthor_textless_2021, lakhotia_generative_2021, lakhotia_generative_2021-1} 的研究，
@@ -157,19 +158,37 @@
 
 }  % \section{model、個案}
 
-\section{⚛️ 分析方式 ⚛️}
+\section{分析方式}
+
+{
+
 
 　　針對模型得出之離散單元與音位標註之間的對應關係，為了使得分析可以更直觀的展示，我們將音位與離散單元的共同機率分佈 \(p_{yz}\) 用熱圖（Heatmap）呈現。這裡以 HuBERT 為基石模型、離散單元分群數為 100 的統計數據為例，圖 \ref{fig:joint-byprob-hub100} 說明我們如何分析語音離散表徵與音位標註的關係。
     {    
         \begin{figure}[ht]
             \centering
             \includegraphics[width=1\linewidth]{figures/joint_sortby_prphn-hub-100.png}
-            \caption{HuBERT 模型、群數 = 100 之 \\ 
-            離散單元與音位標註的共同機率分佈圖}
+            \caption{HuBERT 模型、分群數為 100  \\ 
+            之離散單元與音位標註的共同機率分佈圖}
             \label{fig:joint-byprob-hub100}
         \end{figure} 
     }
         圖中的縱軸表示各個音位，橫軸表示各個離散單元。在這張圖中，縱軸的音位是按照其邊際機率 \(p_y(i)\) 由高至低排序；橫軸的離散單元則是依據其對應的最高機率音位 \(y^\ast(j)\) 的縱軸排序位置進行排列。\footnote{如果兩個離散單元 \(j_1\) 和 \(j_2\) 對應到相同的音位 \(y^\ast = y^\ast(j_1) = y^\ast(j_2)\)，則依照機率值 \(p_{yz}(y^\ast, j_1)\) 和 \(p_{yz}(y^\ast, j_2)\) 由高到低進行排序，對於多個離散單元的情況以此類推。} 這樣可以在熱圖上呈現出由左上至右下的對應關係。
 
+        
+
+}
+
         對於離散單元抽取的過程，
 我們會希望模型的離散單元可以更加集中的
+
+{
+
+
+\section{分析結果}
+\subsection{不同語音離散表徵的比較}
+\subsection{個案探討}
+
+\section{本章總結}
+
+}
