@@ -67,24 +67,16 @@
 $p_{y|z}(i|j)$  條件機率分佈圖}
     \label{fig:hubert-50-givenunit-byprob}
 \end{figure}
-        從圖 \ref{fig:hubert-50-givenunit-byprob} 中可以更明顯的看出，模型會耗費不少種類的離散單元於編碼非音位的音素標註（尤其是 sil）之上。
-% 加上 silence ratio?
-此外，每個離散單元對於其對應的訊號所對應的音位集中程度有高有低，使得音位純度無法到達 1.00。然而，這邊比較有趣的點是，觀察那些對應音位比較分散的離散單元，我們其實可以發現這些音位彼此之間有很強的關聯性，幾乎與前述的語音分類一致。
-        % \begin{figure}
-        %     \centering
-        %     \includegraphics[width=1\linewidth]{figures/unit_perspective.png}
-        %     \caption{離散單元對應的前幾高音位示意。圖中的方框、圓圈等形狀表示輔音發聲部位，外框顏色則表示清濁音。注意元音都屬於濁音}
-        %     \label{fig:unit-to-phn-rankings}
-        % \end{figure}
+        從圖 \ref{fig:hubert-50-givenunit-byprob} 中可以更明顯的看出，模型會耗費不少種類的離散單元於編碼非音位的音素標註（尤其是 sil）之上。\jeffcomment{加上 silence ratio?}此外，每個離散單元對於其對應的訊號所對應的音位集中程度有高有低，使得音位純度無法到達 1.00。然而，這邊比較有趣的點是，觀察那些對應音位比較分散的離散單元，我們其實可以發現這些音位彼此之間有很強的關聯性，幾乎與前述的語音分類一致。  % 
 
-\begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{figures/unit_rank_phn.png}
-    \caption[]{
-    離散單元對應的前幾高音位示意。圖中的方框、圓圈等形狀}
-          表示輔音發聲部位，外框顏色則表示清濁音。注意元音都屬於濁音
-    \label{fig:unit-to-phn-rankings}
-\end{figure}
+        \begin{figure}
+            \centering
+            \includegraphics[width=1\linewidth]{figures/unit_rank_phn.png}  % figures/unit_perspective.png
+            \caption[]{
+            離散單元對應的前幾高音位示意。圖中的方框、圓圈等形狀}
+                  表示輔音發聲部位，外框顏色則表示清濁音。注意元音都屬於濁音
+            \label{fig:unit-to-phn-rankings}
+        \end{figure}
         
         這件事可以從熱圖上由左上而右下連線中，不在線上但顏色較深的區塊中觀察出來。但由於直接從熱圖上觀察比較難以呈現，因此我們另外統計出表 \ref{fig:unit-to-phn-rankings}，其中展現的是幾個離散單元對應的前五高機率音位，並且用顏色標明各音位所屬的語音學類別。從表中大致可以看出以上描述的趨勢，而且即便不是同一個語音學類別，按照前面講解語音學對音位歸類的另外兩個層面 --- 發音部位和清濁音，還是可以將各離散單元的前幾名之中盡量找出共通點。例如 05 號單元對應的前兩名 /t/ 和 /s/ 雖然並不屬於同一個發聲方式，因而被分成兩個類別，但如果從國際音標表中的「發音部位」來觀察，會發現它們都屬於「齒音」。換言之這些離散單元捕捉到的語音特性是多個面向的，並不僅限於單一的分類方式，而是可以對應到國際音標表上至少兩個維度以上的類型。
 
@@ -102,17 +94,15 @@ $p_{y|z}(i|j)$  條件機率分佈圖}
 \begin{figure}
     \centering
     \includegraphics[width=1\linewidth]{figures/hubert-50-givenunit-byphn.png}
-    \caption[]{
-        HuBERT 模型、分群數為 50 之離散單元
-        }  % \medskip % \small
-                       與音位標註的條件機率，依照語音學分類排序的分佈圖
+    \caption[]{% \medskip % \small
+        HuBERT 模型、分群數為 50 之離散單元}
+                                與音位標註的條件機率，依照語音學分類排序的分佈圖
     \label{fig:hubert-50-givenunit-byphn}
 \end{figure}
 
-
         這張圖的分組順序是依照韋氏（Wells） \cite{wells_phonetic_2022} 論文中的出現順序排列，而組別內則是清音在上、濁音在下，而同樣清濁音則是以發音位置由前往後排列。除了縱軸上按照音位本身特性分組，依循純度中使用的「代表音位」 $i^\ast$ 概念，我們同樣也對每個離散單元的代表音位排序，並且也依照這些代表音位進行分組觀察。
 
-        為了比較好的刻劃這個在分群內的好壞，我們接下來多算兩個指標：
+        為了比較好的刻劃這個在分群內的好壞，我們接下來多算兩個指標：\par
 \begin{enumerate}
     \item 語音分類的純度：為了確認每個離散單元如何「將音位至少分到同一語音學類別」的程度，藉由將前面音位純度的式子，但將音位標註改為語音學類別，便可以求得這個數據。
     \item 各發音類別的純度：為了衡量模型對於每個類別內部區分不同音位的能力，比較模型對於不同組別區分音位的難易度，我們可以根據音位的語音學類別，將所有的音框等效分成八份語料後，分別再次統計純度（亦即計算對語音學類別取條件機率後計算純度）。
@@ -139,27 +129,27 @@ $p_{y|z}(i|j)$  條件機率分佈圖}
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{figures/hubert50.png}
+    \includegraphics[width=1\linewidth]{figures/hubert50.png}
     \caption{Hubert}
     \label{fig:enter-label}
 \end{figure}
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{figures/w2v250.png}
+    \includegraphics[width=1\linewidth]{figures/w2v250.png}
     \caption{w2v2}
     \label{fig:enter-label}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{figures/cpc50.png}
+    \includegraphics[width=1\linewidth]{figures/cpc50.png}
     \caption{cpc}
     \label{fig:enter-label}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{figures/logmel50.png}
+    \includegraphics[width=1\linewidth]{figures/logmel50.png}
     \caption{logmel}
     \label{fig:enter-label}
 \end{figure}
@@ -178,7 +168,7 @@ $p_{y|z}(i|j)$  條件機率分佈圖}
 
         比較完這些表徵與離散單元數量的各項綜觀統計指標後，我們基於 MI 和 pur 的高，著重關注於 hubert 100 和 50 模型或 CPC，藉由觀察和比較兩個模型共有的規律，往下細部探討該模型所捕捉到的離散單元和因為之間的關係。
 
-\subsection{個案探討}  % 分組討論
+\subsection{個案探討}  % 分組討論  %
 
 　　首先，承接前面所述的「熱塗上不再斜線上的點」，我們可以觀察每個離散單元所對應的 phn 之間的共同特性。
 
