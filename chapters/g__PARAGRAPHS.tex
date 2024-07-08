@@ -1,0 +1,19 @@
+
+{
+
+        % 對於一個聲學單元發掘的系統，我們關注的問題會在
+
+
+    對於一個 unit encoding 系統的評估，我們特別關注的是每個 unit 所代表的 phoneme 是否集中，以及每個 phoneme 是否可以由較少的 unit 代表。理想情況下，當某個 unit 出現時，我們應該幾乎能夠確定它代表的是哪一個 phoneme。
+
+這兩個指標可以在圖上通過顏色深淺來直觀地展示：
+首先，phoneme purity 表示每個 column 取最大值後相加的總和。其次，unit purity 表示每個 row 取最大值後的 pxy 總和。 
+
+從這裡我們可以看到，unit purity 受到每個 unit 只能取 41 個 pxy 總和的限制。而當 cluster 數量增加時，phoneme purity 可以取得更多的 pxy 總和。這也意味著當 cluster 數量與 frame 數量相同時，phoneme purity 可以達到 100\%。另一方面，當 cluster 數量增加時，每個格子的 pxy 會因 unit 數量的增多而被稀釋，但 unit purity 的 pxy 總和受到 phoneme 數量的限制，因此當 cluster 數量增加時，unit purity 會降低，這一點可以從圖中觀察到。
+
+參考浩然哥和 sptok 等前人的研究，由於 unit 是假設，我們主要關注的是每個 unit 如何對應到音位標註上。為了更直觀地觀察這一點，我們將熱圖呈現為 p(p|u)，即對每個值進行歸一化，以顯示每個 unit 對應到哪個 phoneme，以及這種對應是集中還是分散。如下圖 \ref{fig:prob} 所示：
+
+}
+
+        如何
+zz

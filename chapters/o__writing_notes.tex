@@ -27,3 +27,19 @@ CPCfix, framefix 有空再說
 標註
 碼字（Codeword）
 pattern 類型
+
+
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+% ref: https://tex.stackexchange.com/questions/24496/use-caption-and-long-description-for-figure
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{figures/hubert-50-givenunit-byphn.png}
+    \caption[]{
+        HuBERT 模型、分群數為 50 之離散單元
+        }  % \medskip % \small
+                       與音位標註的條件機率，依照語音學分類排序的分佈圖
+    \label{fig:hubert-50-givenunit-byphn}
+\end{figure}
