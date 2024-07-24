@@ -1,0 +1,400 @@
+　　 %%%%%%%%%%%%%%%%%%%%%%%%%　　
+\mychcnt{3}
+\chapter{單一語音離散表徵與音位的關係}
+\input{chapters/ch3-pre}
+
+\section{結果分析}
+
+\subsection{綜觀不同語音離散表徵的比較}  % 1 + 2
+
+{   % (1) 首先，先把純度的數據秀出來，然後秀四張表，說這是整體，然後再秀不同的分群數量。
+　　針對模型得出之離散單元與音位標註之間的對應關係，為了更直觀的解釋這些指標的意義，並且看清楚這些數字背後之間代表的現象與細部特徵，我們將音位與離散單元的共同機率分佈 \(p_{yz}\) 用熱圖（Heatmap）呈現，來解釋這些指標的意義，並以此進一步往下深入探討。
+
+        首先，這裡以 HuBERT 為基石模型、離散單元分群數為 50 的統計數據為例，圖 \ref{fig:hubert-50-joint-byprob} 說明我們如何分析語音離散表徵與音位標註的關係。
+{
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{figures/hubert-50-joint-byprob.png}
+    \caption{HuBERT 模型、分群數為 50 之 \\
+    離散單元與音位標註的共同機率分佈圖}
+    \label{fig:hubert-50-joint-byprob}
+\end{figure}
+
+}
+        圖中的縱軸表示各個音位，橫軸表示各個離散單元。在這張圖中，縱軸的音位是按照其邊際機率 \(p_y(i)\) 由高至低排序；橫軸的離散單元則是依據其對應的最高機率音位 \(y^\ast(j)\) 的縱軸排序位置進行排列。\footnote{如果兩個離散單元 \(j_1\) 和 \(j_2\) 對應到相同的音位 \(y^\ast = y^\ast(j_1) = y^\ast(j_2)\)，則依照機率值 \(p_{yz}(y^\ast, j_1)\) 和 \(p_{yz}(y^\ast, j_2)\) 由高到低進行排序，對於多個離散單元的情況以此類推。} 這樣可以在熱圖上呈現出由左上至右下的對應關係。
+
+        為了評估離散表徵是否有捕捉到與音位相關的資訊，我們可以分別從音位與離散單元的兩個角度出發，考慮以下兩個問題：
+\begin{enumerate}
+    \item 一個離散單元所對應的音位的集中或分散程度如何？如果一個音框的語音訊號被模型指示為特定的離散單元，該單元作為虛擬標註，能多大程度的對應到人耳感知的音位標註？也就是這些虛擬標註，是否達成音位標註類似的效果，足以把不同語音特徵區分開來。
+    \item 反之，對於每個音位而言，它們所對應的離散單元集中程度如何？從這個角度出發，可以觀察不同音位的集中程度，進而推論模型是否能夠辨認出該音位的發音特性，藉由給予夠高的一致性將這些語音訊號分類在一起。會不會有某一些音位很難被歸類出來？
+\end{enumerate}
+
+{
+        就綜觀的角度，這兩個問題的答案可以分別很直觀的從圖中顏色的深淺觀察出來，也正好對應前面所提及的兩個純度指標：
+        \begin{enumerate}
+            \item 將每個直行（Column）取最大值相加後的總和即為音位純度
+            \item 將每個橫列（Row）取最大值相加後的總和則是分群純度
+        \end{enumerate}
+
+        從這裡我們可以看到，當分群數量增加時，音位純度可以在每個直行上取到更多的機率值，這也意味著當分群數量與音框數量相同時，音位純度可以達到 100\%，與前面的描述互相吻合。另一方面，當分群數量增加時，每個格子的機率值會因為離散單位數量的增多而被稀釋，而分群純度受到音位數量限制，只能取 41 個 $p_{yz}$ 值的總和，使得單位純度因而明顯降低。
+}
+
+{
+
+
+\begin{table}[!htbp]
+    \centering
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|} \hline
+                        & 音位純度   & 分群純度   & 音位熵    & 離散單元熵  & PNMI   \\ \hline
+            HuBERT      &     0.5256 &     0.3382 &    3.3152 &      3.8681 & 0.4993 \\ \hline    %% 1.6552 h
+            CPC         &     0.5188 &     0.3812 &    3.3146 &      3.7918 & 0.4992 \\ \hline    %% 1.6545 c
+            Wav2vec 2.0 &     0.4006 &     0.2676 &    3.3152 &      3.8215 & 0.3706 \\ \hline    %% 1.2286 w
+            LogMel      &     0.3253 &     0.1473 &    3.3158 &      3.8630 & 0.2647 \\ \hline    %% 0.8776 l 
+        \end{tabular}
+        \caption{群數 = 50}
+        \label{tab:ch3-clu050-phn}
+    \end{subtable}
+
+    \vspace{0.5cm}
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|} \hline
+                        & 音位純度   & 分群純度   & 音位熵    & 離散單元熵  & PNMI   \\ \hline
+            HuBERT      &     0.6097 &     0.2553 &    3.3152 &      4.5704 & 0.5786 \\ \hline    %% 1.9181 h
+            CPC         &     0.5895 &     0.2674 &    3.3146 &      4.5034 & 0.5557 \\ \hline    %% 1.8418 c
+            Wav2vec 2.0 &     0.4877 &     0.2118 &    3.3152 &      4.5284 & 0.4596 \\ \hline    %% 1.5235 w
+            LogMel      &     0.3348 &     0.0931 &    3.3158 &      4.5591 & 0.2789 \\ \hline    %% 0.9247 l 
+        \end{tabular}
+        \caption{群數 = 100}
+        \label{tab:ch3-clu100-phn}
+    \end{subtable}
+
+    \vspace{0.5cm}
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|} \hline
+                        & 音位純度   & 分群純度   & 音位熵    & 離散單元熵  & PNMI   \\ \hline
+            HuBERT      &     0.6474 &     0.1644 &    3.3152 &      5.2681 & 0.6289 \\ \hline    %% 2.0849 h
+            CPC         &     0.6098 &     0.1789 &    3.3146 &      5.1885 & 0.5882 \\ \hline    %% 1.9497 c
+            Wav2vec 2.0 &     0.5427 &     0.1467 &    3.3152 &      5.2173 & 0.5188 \\ \hline    %% 1.7199 w
+            LogMel      &     0.3474 &     0.0569 &    3.3158 &      5.2322 & 0.2955 \\ \hline    %% 0.9798 l 
+        \end{tabular}
+        \caption{群數 = 200}
+        \label{tab:ch3-clu200-phn}
+    \end{subtable}
+
+    \caption{不同群數在四種基石模型的音位分析數據}
+    \label{tab:single-cluster-results}
+\end{table}
+
+}  % table
+{
+
+% \newcommand{\jeffheightt}[1]{\includegraphics[width=0.6\linewidth]{#1}}
+\newcommand{\jeffheightt}[1]{\includegraphics[width=1\linewidth]{#1}}
+
+\begin{figure}
+     \centering
+     \begin{subfigure}{\textwidth}  % [t]{\textwidth}
+         \centering
+         \jeffheightt{figures/hubert-50-joint-byprob--new1.png}
+         \caption{HuBERT}
+         \label{fig:ch3-heatmap-model--hubert-50-joint-byprob}
+     \end{subfigure}
+     \vfill
+
+     \begin{subfigure}{\textwidth}  % [t]{\textwidth}
+         \centering
+         \jeffheightt{figures/cpc-50-joint-byprob.png}
+         \caption{CPC}
+         \label{fig:ch3-heatmap-model--cpc-50-joint-byprob}
+     \end{subfigure}
+
+     % \vfill
+     % \begin{subfigure}{\textwidth}  % [t]{\textwidth}
+     %     \centering
+     %     \jeffheightt{figures/cpc-50-joint-byprob.png}
+     %     \caption{CPC}
+     %     \label{fig:ch3-heatmap-model--cpc-50-joint-byprob}
+     % \end{subfigure}
+     % \vfill
+     % \begin{subfigure}{\textwidth}  % [t]{\textwidth}
+     %     \centering
+     %     \jeffheightt{figures/logmel-50-joint-byprob.png}
+     %     \caption{LogMel}
+     %     \label{fig:ch3-heatmap-model--logmel-50-joint-byprob}
+     % \end{subfigure}
+     \caption{模型比較}
+     \label{fig:ch3-heatmap-model-comparison--part1}
+\end{figure}
+
+
+\begin{figure}
+    \ContinuedFloat
+    % \setcounter{subfigure}{2}
+     \centering
+     % \begin{subfigure}{\textwidth}  % [t]{\textwidth}
+     %     \centering
+     %     \jeffheightt{figures/hubert-50-joint-byprob--new1.png}
+     %     \caption{HuBERT}
+     %     \label{fig:ch3-heatmap-model--hubert-50-joint-byprob}
+     % \end{subfigure}
+     % \vfill
+     % \begin{subfigure}{\textwidth}  % [t]{\textwidth}
+     %     \centering
+     %     \jeffheightt{figures/w2v2-50-joint-byprob.png}
+     %     \caption{Wav2vec 2.0}
+     %     \label{fig:ch3-heatmap-model--w2v2-50-joint-byprob}
+     % \end{subfigure}
+     % \vfill
+     
+          \begin{subfigure}{\textwidth}  % [t]{\textwidth}
+         \centering
+         \jeffheightt{figures/w2v2-50-joint-byprob.png}
+         \caption{Wav2vec 2.0}
+         \label{fig:ch3-heatmap-model--w2v2-50-joint-byprob}
+     \end{subfigure}
+     
+     \vfill
+     \begin{subfigure}{\textwidth}  % [t]{\textwidth}
+         \centering
+         \jeffheightt{figures/logmel-50-joint-byprob.png}
+         \caption{LogMel}
+         \label{fig:ch3-heatmap-model--logmel-50-joint-byprob}
+     \end{subfigure}
+     \caption{模型比較（續）}
+     \label{fig:ch3-heatmap-model-comparison--part2}
+\end{figure}
+
+}  % heatmaps
+
+　　首先，表 \ref{tab:single-cluster-results} 比較了不同模型的純度與相互資訊的數據，而這四個離散表徵在分群數為 50 的機率聯合分佈圖於圖 \ref{fig:ch3-heatmap-model-comparison--part1} 中呈現。從這些分析結果，我們可以觀察到 HuBERT 和 CPC 對於捕捉音位之間的關係是比較好的，音位純度與分群純度都較高這點，也在熱圖上以較為清晰深色的格子呈現。由此可以說明 HuBERT 和 CPC 模型在捕捉訊號中的發音特徵能力效果較 Wav2vec 2.0 和聲學特徵的 LogMel 好上不少。同樣的趨勢在群數為 100 和 200 時也能被觀察出來，尤其又以 HuBERT 效果明顯好上不少。
+
+%%%%%%%%%%%% ///////////
+
+        以上是綜觀整個系統給予虛擬標註時，對應到音位標註的好壞。然而我們可以更進一步的探討各音位與離散單元之間的內部差異，也就是分別探討：
+\begin{itemize}
+    \item 哪些離散單元比較能集中抓取音位的特徵，不會與其他音位混淆？
+    \item 如果一個離散單元被分散的對應到多個音位，那麼這些音位可能是哪幾個？是否存在某些共同特徵？
+\end{itemize}
+
+((( 於是，接下來我們便分別以離散單元與音位各自的角度分別探討這張分佈圖的細節，可以帶給我們什麼細部資訊，最後再回頭對照這些觀察是否可以在整體熱圖上有所對應的規律被呈現出來。 )))
+
+        說明完以上指標後，我們將展示不同離散表徵模型的所有分析，彼此先進行綜觀比較，此後再針對細部的特徵分析。
+
+\subsection{看離散單元}  % 3 + 4 + 5  %%% 先看縱軸
+
+{
+        % (2) 然後接下來從縱軸看基於離散單元的特性，那你可以看的有，第一個它們的直方圖，看這些離散單元彼此之間亂不亂，然後你可以看說每個離散單元，它的對應的音位排名是不是同一類，同一類那你可以把那個顏色圖拿出來，然後你顏色圖拿出來之後為了刻劃這件事情，你就可以去用類別標註這個數據來講述這件事。
+
+        這邊就舉說一個模型有，另一個模型也有，就夠了。
+}
+
+        由於這些問題是以離散單元的角度出發，因此我們仿照前作如 SpeechTokenizer \cite{zhang2024speechtokenizer}、DinoSR \cite{liu2024dinosr} 的作法，將熱圖改以 $p_{y|z}(i|j)$ 呈現，即對每個直行進行標準化得到條件機率，以顯示每個單位對應到哪個音位，探討這種對應如何集中或分散。
+
+%%%%%%%%%%%%%%%%5/////////////////////=============
+
+        除了從熱圖與純度觀察，我們也可以觀察每個模型對應離散單元所對應的音位的條件音位熵分佈，來探討這些離散單元捕捉音位分佈的效果。圖 \ref{fig:zhifangtu} 展示了四種模型的音位熵分佈直方圖，比較四個模型在群數 50 和 100 的直方圖，我們也可以得到和前段相同的結論 --- HuBERT 的表現是四個模型中最好的。
+
+        因此，我們可以著重觀察 HuBERT，進一步比較三個不同分群數的機率熱圖。依循前作慣例 \cite{wells_phonetic_2022, zhang2024speechtokenizer, liu2024dinosr} ，我們在這邊以條件機率呈現。從圖中可以發現，當分群數量上升時，離散單元之間有對區分不同音位的效果得到提升。
+
+%%%%%%%%%%%%%%%%5/////////////////////=============
+%%%%%%%%%%%%%%%%5/////////////////////=============
+
+{
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{figures/0000000.png}
+    \caption{這邊之後放直方圖}
+    \label{fig:zhifangtu}
+\end{figure}
+
+  }
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        接下來，我們切入去觀察模型細部的個案探討。首先，我們先從離散單元的角度切入，我們可以發現，如同前面的直方圖所說，這些離散單元本身在編碼對應的音位本身的均勻程度並不是那麼一致。然而即便如此，從圖上那些不在線上的點，我們想知道的是，除了第一名的音位之外，第二名以後的音位會不會其實跟第一名之間也有一定的相關性。
+
+        因此，我們可以把各個離散單元之間機率最高的五個對應音位按照語音學分組的順序依序排列出來，如圖 \ref{fig:enter-labfffel} 所示。可以看到後面幾名的音位確實都跟第一個都有很高的相關性。\jeffcomment{（是不是又要重講一遍前面的了？拉過來？）}
+
+\jeffcomment{前面的細部非線的黑點點先拿掉}
+
+        %%%%%%%%%%%%%%%%5/////////////////////
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{figures/11111111.png}
+    \caption{HuBERT 模型、分群數為 50 之\\
+$p_{y|z}(i|j)$  條件機率分佈圖}
+    \label{fig:hubert-50-givenunit-byprob}
+\end{figure}
+        從圖 \ref{fig:hubert-50-givenunit-byprob} 中可以更明顯的看出，模型會耗費不少種類的離散單元於編碼非音位的音素標註（尤其是 sil）之上。\jeffcomment{加上 silence ratio?}此外，每個離散單元對於其對應的訊號所對應的音位集中程度有高有低，使得音位純度無法到達 1.00。然而，這邊比較有趣的點是，觀察那些對應音位比較分散的離散單元，我們其實可以發現這些音位彼此之間有很強的關聯性，幾乎與前述的語音分類一致。  % 
+
+        \begin{figure}
+            \centering
+            \includegraphics[width=1\linewidth]{figures/unit_rank_phn.png}  % figures/unit_perspective.png
+            \caption[]{
+離散單元對應的前幾高音位示意
+% 。圖中的方框、圓圈等形狀
+}
+                                          % 表示輔音發聲部位，外框顏色則表示清濁音。注意元音都屬於濁音
+            \label{fig:unit-to-phn-rankings}
+        \end{figure}
+        
+        這件事可以從熱圖上由左上而右下連線中，不在線上但顏色較深的區塊中觀察出來。但由於直接從熱圖上觀察比較難以呈現，因此我們另外統計出表 \ref{fig:unit-to-phn-rankings}，其中展現的是幾個離散單元對應的前五高機率音位，並且用顏色標明各音位所屬的語音學類別。從表中大致可以看出以上描述的趨勢，而且即便不是同一個語音學類別，按照前面講解語音學對音位歸類的另外兩個層面 --- 發音部位和清濁音，還是可以將各離散單元的前幾名之中盡量找出共通點。例如 05 號單元對應的前兩名 /t/ 和 /s/ 雖然並不屬於同一個發聲方式，因而被分成兩個類別，但如果從國際音標表中的「發音部位」來觀察，會發現它們都屬於「齒音」。換言之這些離散單元捕捉到的語音特性是多個面向的，並不僅限於單一的分類方式，而是可以對應到國際音標表上至少兩個維度以上的類型。
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{figures/ipa_similarity.png}
+    \caption[]{
+國際音標表的輔音表格，說明離散單元}
+                                                                對語音聲學特徵的捕捉並不僅限單一面向
+    \label{fig:ipa-cons-table-sim}
+\end{figure}
+
+        透過以上的觀察，因此我們有足夠的理由重新對熱圖的縱軸重新排列，並按照語音學分類進行分組，來觀察這些離散單元是如何指示出音位之間的相似性，區分出同個音位、同類發音，或者如何被混淆為其他類別，而這些類別是否有某些特徵，最後這樣的現象是否只在單一模型出現，抑或是在不同的離散單元系統都會發生。
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{figures/hubert-50-givenunit-byphn.png}
+    \caption[]{% \medskip % \small
+        HuBERT 模型、分群數為 50 之離散單元}
+                                                    與音位標註的條件機率，依照語音學分類排序的分佈圖
+    \label{fig:hubert-50-givenunit-byphn}
+\end{figure}
+
+        這張圖的分組順序是依照韋氏（Wells） \cite{wells_phonetic_2022} 論文中的出現順序排列，而組別內則是清音在上、濁音在下，而同樣清濁音則是以發音位置由前往後排列。除了縱軸上按照音位本身特性分組，依循純度中使用的「代表音位」 $i^\ast$ 概念，我們同樣也對每個離散單元的代表音位排序，並且也依照這些代表音位進行分組觀察。
+
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{figures/fff.png}
+    \caption{Enter Caption}
+    \label{fig:enter-labfffel}
+\end{figure}
+
+        因此，為了刻劃出這種離散表徵歸類到同樣語音學分類之比例的程度，我們可以改統計把所有音素標註改用語音學分類取代，再次計算純度的數據來確認這件事。圖 \ref{ffffff} 就說明了，HuBERT 不但能夠很好的區分出音位，即便是沒有分到準確的音位，也可以擷取到最相近類別的音位，因此在語音學類別的純度上會比其他模型來得高。
+
+        
+        為了比較好的刻劃這個在分群內的好壞，我們接下來多算兩個指標：\par
+\begin{enumerate}
+    \item 語音分類的純度：為了確認每個離散單元如何「將音位至少分到同一語音學類別」的程度，藉由將前面音位純度的式子，但將音位標註改為語音學類別，便可以求得這個數據。
+\end{enumerate}
+
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{figures/ffff.png}
+    \caption{fffff}
+    \label{ffffff}
+\end{figure}
+
+}
+
+\subsection{6看音位}
+
+{
+        % (3) 然後再來換橫軸，看每一個音位對應的離散單元熵值，來決定說哪些音位比較好哪些比較難，那這件事情是不是也可以擴及到其它的模型。
+}
+
+
+
+% /////////
+
+        最後，我們來從橫軸音位的角度切入，觀察哪些音位可能是比較集中或分散，也就是容易或難以被離散單元編碼的。表  \ref{fig:entefffffr-label} 與表 \ref{ewfeef} 呈現了分群數為 50 和 100 中，離散單元熵最高與最低的幾個音位，由此可以看到：spn、AH、IH、T、D 等音位是比較難以被捉摸的音位，而 AA、EY、F、ZH、SH、S 等是比較容易被抓取的音位。整體而言，塞音都屬於熵比較高的，而擦音則是比較集中，而且這個趨勢大致上不同的模型、分群數都存在，只是又以 HuBERT 相對最明顯。
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{figures/aaaaaaaaaaaaaa.png}
+    \caption{Enter Caption}
+    \label{fig:entefffffr-label}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{figures/asdfasdfsfasfaew.png}
+    \caption{wsfe}
+    \label{ewfeef}
+\end{figure}
+
+\subsection{6考慮分組指標}
+
+
+{
+        % (4) 然後最後就是你要看，就是分不同群因為你已經有標註了，那我們也可以藉由這個類別分不同群之間，它的純度，一來你可以看針對每一個語音學類別，它模型的表現是否一致，然後你還可以比較不同的語音學類別彼此之間，八個類別的差異，而第八個類別它很特別，因為它不是音位，那你可以去計算說，它的佔用的比例有多少這件事情。
+}
+
+
+
+        為了比較好的刻劃這個在分群內的好壞，我們接下來多算兩個指標：\par
+\begin{enumerate}
+    \item 各發音類別的純度：為了衡量模型對於每個類別內部區分不同音位的能力，比較模型對於不同組別區分音位的難易度，我們可以根據音位的語音學類別，將所有的音框等效分成八份語料後，分別再次統計純度（亦即計算對語音學類別取條件機率後計算純度）。
+\end{enumerate}
+
+
+% /////////
+% /////////
+% /////////
+
+
+        另外，既然已經可以根據語音學類別對機率熱圖進行分群，我們便可以將資料集按照語音學類別分組， 然後去探討各自類別的純度高低。 （細緻說明一下？） 如此一方面可以觀察模型之間的差異，也可以觀察不同語音學類別之間發音特徵擷取的難易程度。因此，表 \ref{sdfsdf} 中變呈現了這些模型的比較數據。
+
+ \begin{figure}
+     \centering
+     \includegraphics[width=0.5\linewidth]{figures/lll.png}
+     \caption{sldflsdlf}
+     \label{sdfsdf}
+ \end{figure}
+
+        首先，由圖中依然可以觀察到 HuBERT 優於其他模型，以及分群數愈多相互資訊與音位純度愈高等和前述一致的趨勢。此外，我們還可以觀察到，撇去非音位（表格中的「XXX」）這類由於只有 sil 一類標註，因此相互資訊和純度相當高之外，就近音、雙元音和擦音是純度相對高的，而塞音、塞擦音則是比較難以被抓取的語音學組別。最後，關於非音位的語音訊號，觀察這些模型的等效花費多少比例的離散單元去代表這些非音位的資訊，可以發現 HuBERT 雖然擷取音位的整體表現比較好，但也耗費了不低比例的單元去編碼非音位的資訊。
+
+
+{
+        % (5) 最後最後可把整張圖，把前面得到那些 HuBERT 比較好的結論塞音比較難編碼的結論用熱圖的深淺來確認。
+}
+
+
+\subsection{7最後整體確認}
+
+% ////
+
+        在那之後的最後，仿照韋氏（Well） \cite{wells_phonetic_2022} 的研究方法，我們可以觀察可能哪些離散單元對音位以及其分組具有代表性。然而比起直接看離散單元的編號，在此我們改由對機率熱圖做分區的細部視覺化剖析，來最後確認前面的那些觀察。在此由於 HuBERT 表現最好，而 100 這個不會太細但又足以區分出塞擦音的分群數，來進行細部剖析。
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{figures/sdfasdfasdfaqqqqqqqq.png}
+    \caption{Enter Caption}
+    \label{sdfasdfasdfaqqqqqqqq}
+\end{figure}
+
+        從圖 \ref{sdfasdfasdfaqqqqqqqq} 可以看出，塞音和塞擦音的色塊確實比較淺，也就是比較分散，而擦音和雙元音則是很明顯的深色色塊，代表分群比較集中，由此應證前面從音位的離散單元熵以及各語音學分類的純度等觀察。\jeffcomment{（切塊出來看）}
+
+
+　　 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%　　
+
+
+{
+
+\section{本章總結}
+
+
+　　在這裡，我們從純度的計算開始，對於整個機率熱圖做了視覺化分析，並且藉由語音學提供的分群方式，將原先約 50 類獨立標籤透過語音知識的協助，進行更深入的特性分析探討，也確認了 HuBERT 之所以優於其他模型，並常被無文字架構所使用，從語音音位特性的擷取的優秀表現中得到了不錯的印證。
+
+%%%%%%%%=============================
+
+
+　　本章節探討以音框為單位取出的語音離散表徵與對應的音位標註之間的關係，從分析結果中可以看到，HuBERT 模型的離散表徵確實與人類理解的語音單位「音位」之間具有最明顯的相似性，也進一步證明為何 HuBERT 是抽取語音離散表徵時最常使用的模型。
+
+        然而，單一離散表徵僅能代表 10 或 20 毫秒的語音訊號，而音位的長度經常佔據不只一個離散表徵。因此，下一章節將進一步組合多個離散表徵成為符記，分析它們與音位之間的關係。
+
+% 　　從統計數據出發，我們針對聯合分佈的各個面向，配合了語音學知識的分類進行了細部探討，發現了 hunert 模型怎樣怎樣，而這件事可能在其他的模型之中差不多是 holid 住的。然後，因為 hunert 本身捕捉的各項純度與 MI 明顯較高，以此可以驗證為什麼 HuBERT 的離散單元可以在無文字架構內被當成類似音位或文字的表徵，並進而套用於語音語言模型的訓練上，同時為許多做語音模型解釋性的作品所關注citehao。
+
+
+}
