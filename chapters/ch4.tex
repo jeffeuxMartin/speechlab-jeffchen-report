@@ -1,24 +1,16 @@
 
-\mychcnt{4}
-\chapter{多個語音離散單元}
+\chapter{多個語音離散單元} 
+\newcommand{\jefftablesep}{\vspace{0.5cm}}
 
-{  \jeffcomment{before analysis}
-{  \jeffcomment{pre}
-\section{動機}
-　　本章節我們嘗試用分詞方法。
-
-\section{相關研究} 
-　　像是 Wav2seq \cite{wu_wav2seq_2023}  論文等等就是相關的研究。
-
-\section{分詞方法}
-　　這邊講述 BPE、Unigram 等演算法具體怎麼實行。
-        \newcommand{\jefftablesep}{\vspace{0.5cm}}
-        \renewcommand{\arraystretch}{0.7} % 調整行高
-}
+{  \jeffcomment{before analysis}  
+{  \jeffcomment{pre}   \renewcommand{\arraystretch}{0.7}
+\section{動機}            　　本章節我們嘗試用分詞方法。
+\section{相關研究} 　　像 Wav2seq \cite{wu_wav2seq_2023}  論文等就是相關研究。
+\section{分詞方法} 　　這邊講述 BPE、Unigram 等演算法具體怎麼實行。}
 
 \section{衡量方式}
-　　本章節沿用上一章節 LibriSpeech 資料集的 train-clean-100 訓練子集，以及相同的分析數據以進行比對。由於與上一章節的差異僅在分詞方法的引入，因此數據結果將多紀錄分詞前後序列長度的變化；其他操控變因包含分詞方法與詞表大小。考慮到語音訊號本身不如英語等文字，在書寫時就已經具備空格分隔單詞，因此以下分析結果皆採用 SentencePiece 套件中實作之單一詞演算法為分詞方法，並比較詞表大小 500、1000、8000、10000、20000 五種設定的結果差異。（空間不足時則僅呈現 500、1000、10000 三種設定的趨勢。）
-}
+
+　　本章節沿用上一章節 LibriSpeech 資料集的 train-clean-100 訓練子集，以及相同的分析數據以進行比對。由於與上一章節的差異僅在分詞方法的引入，因此數據結果將多紀錄分詞前後序列長度的變化；其他操控變因包含分詞方法與詞表大小。考慮到語音訊號本身不如英語等文字，在書寫時就已經具備空格分隔單詞，因此以下分析結果皆採用 SentencePiece 套件中實作之單一詞演算法為分詞方法，並比較詞表大小 500、1000、8000、10000、20000 五種設定的結果差異。（空間不足時則僅呈現 500、1000、10000 三種設定的趨勢。） }
 
 \section{分析結果} 
 
@@ -37,6 +29,5 @@
 　　最後觀察將語音標註換成語音學分類的結果，一樣可以從表 \ref{tab:hubert-pcls-results}、\ref{tab:w2v2-pcls-results} 和 \ref{tab:ch4-models-pcls} 觀察到與上一小節相同的趨勢。   \input{tables/chapter4/tab2}
 
                
-\section{本章總結}
-
-　　藉由分詞演算法的引入，我們觀察了用分詞方法的效果差異。
+{
+\section{本章總結}　　藉由分詞演算法的引入，我們觀察了用分詞方法的效果差異。}
