@@ -1,3 +1,4 @@
+% {
 \newcommand{\NOTEHERE}[1]{\colorbox{yellow}{\textcolor{blue}{
     \lparen\lparen\lparen}\textcolor{
         red}{#1}\textcolor{blue}{\rparen\rparen\rparen}}}
@@ -39,6 +40,30 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\jeffcomment}[1]{}
 
+% }
+
+%%%%%jjjjjjjjjjjjjjjjjj
+%%%%%jjjjjjjjjjjjjjjjjj
+% \NTUtitlepage  % 產生論文封面
+% \newpage
+\setcounter{page}{1}
+\pagenumbering{roman}
+\mydoublespacing
+%%%%%%%%%%%%%%%%% \begin{acknowledgement} %誌謝
+%%%%%%%%%%%%%%%%%     \input{chapters/end-ack}
+%%%%%%%%%%%%%%%%% \end{acknowledgement}
+
+%%%% \begin{zhAbstract} % 中文摘要            %%%% %%%% %%%% 1111111111111111111111111111111
+%%%%     \input{chapters/de--abstract--zh}            %%%% %%%% %%%% 1111111111111111111111111111111
+%%%% \end{zhAbstract}            %%%% %%%% %%%% 1111111111111111111111111111111
+
+%%%%%%%% \begin{enAbstract} % 英文摘要
+%%%%%%%%     \input{chapters_stable/afters/de--abstracten}
+%%%%%%%% \end{enAbstract}
+%%%%%%%%kkkkkkkkkkkkkkkkkkkk
+%%%%%%%%kkkkkkkkkkkkkkkkkkkk
+%%%%%%%%kkkkkkkkkkkkkkkkkkkk
+
 {\mysinglespacing\selectfont
 \tableofcontents
 \par}
@@ -47,36 +72,35 @@
 
 % \textcolor{white}{\_}\newpage
 
-\newpage\textcolor{white}{0}\newpage  %
+% \newpage\textcolor{white}{0}\newpage  %
 %%%%%%%%%%%%%%%%%%%%%% \newpage\textcolor{white}{0}\newpage  %
 
-\mychcnt{4}
-\mychcnt{3}
-\mychcnt{4}
-\setcounter{page}{56}
-\mychcnt{4}
-\input{chapters/ch4}
 
-%%% \newpage\textcolor{white}{0}\newpage  %
-%%% 
-%%% \newpage\textcolor{white}{0}\newpage  %
-%%% \newpage\textcolor{white}{0}\newpage  %
-%%% \newpage\textcolor{white}{0}\newpage  %
-%%% \newpage\textcolor{white}{0}\newpage  %
+% \newpage\textcolor{white}{0}\newpage  %
 
-%%%%% {
-%%%%% 
-%%% \setcounter{page}{23}
-%%% \mychcnt{3}
-%%% \input{chapters_stable/ok__ch3}
-%%%%% 
-%%%%% \setcounter{page}{1}
-%%%%% \mychcnt{1}
-%%%%% \input{chapters_stable/ok__ch1}
-%%%%% \input{chapters_stable/ok__ch2}
-%%%%% 
-%%%%% 
-%%%%% }
+% \newpage\textcolor{white}{0}\newpage  %
+% \newpage\textcolor{white}{0}\newpage  %
+% \newpage\textcolor{white}{0}\newpage  %
+% \newpage\textcolor{white}{0}\newpage  %
+
+{
+
+% \setcounter{page}{1}
+% \mychcnt{1}
+%%%%%%%% \input{chapters_stable/ok__ch1} %%%%%%%%%%%%%%%% 22222222222222222222222222
+%%%%%%%% \input{chapters_stable/ok__ch2} %%%%%%%%%%%%%%%% 22222222222222222222222222
+%%%%%%%%  %%%%%%%%%%%%%%%% 22222222222222222222222222
+%%%%%%%%  %%%%%%%%%%%%%%%% 22222222222222222222222222
+%%%%%%%%  %%%%%%%%%%%%%%%% 22222222222222222222222222
+%%%%%%%% % \setcounter{page}{23} %%%%%%%%%%%%%%%% 22222222222222222222222222
+%%%%%%%% % \mychcnt{3} %%%%%%%%%%%%%%%% 22222222222222222222222222
+%%%%%%%% \input{chapters_stable/ok__ch3} %%%%%%%%%%%%%%%% 22222222222222222222222222
+%%%%%%%%  %%%%%%%%%%%%%%%% 22222222222222222222222222
+%%%%%%%% \input{chapters_stable/ch4} %%%%%%%%%%%%%%%% 22222222222222222222222222
+\mychcnt{5}
+\input{chapters/ch5}
+
+}
 
 %%% {
 %%% \mychcnt{5}
