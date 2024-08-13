@@ -18,8 +18,17 @@
     Extension = .ttf ,
     BoldFont = Kaiti-Black, ]
 % ================== fixed by JEFF & ChatGPT Plus ================== %
-\setCJKsansfont[BoldFont=Noto Serif CJK TC Bold]{Noto Serif CJK TC Light}
-\setCJKmonofont[BoldFont=Noto Serif CJK TC Bold]{Noto Serif CJK TC Light}
+\IfFontExistsTF{Noto Serif CJK TC Bold}{
+    \setCJKsansfont[BoldFont=Noto Serif CJK TC Bold]{Noto Serif CJK TC Light}
+}{
+    \setCJKsansfont[BoldFeatures={FakeBold=3}]{Noto Serif CJK TC Light}
+}
+
+\IfFontExistsTF{Noto Serif CJK TC Bold}{
+    \setCJKmonofont[BoldFont=Noto Serif CJK TC Bold]{Noto Serif CJK TC Light}
+}{
+    \setCJKmonofont[BoldFeatures={FakeBold=3}]{Noto Serif CJK TC Light}
+}
 \newCJKfontfamily\zhKaiFont{AR PL UKai TW}
 %%%%%%%%%%%%%%%%%%%% fixed by JEFF & ChatGPT Plus %%%%%%%%%%%%%%%%%%%%
 % \setmainfont{Nimbus Roman}       % fixed by JEFF & ChatGPT Plus
