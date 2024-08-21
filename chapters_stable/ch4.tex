@@ -1,3 +1,4 @@
+% ! TEX root = ../../realeasythesis.tex  % jeffhere
 
 \chapter{多個語音離散表徵與音位的關係}   \input{chapters_stable/tinys}
 
@@ -82,7 +83,7 @@
                  20000  &   0.5921   &  0.0182 &   3.3152  &  9.3527 & 0.5820 \\ \hline %%  1.9293       
         \end{tabular}
 \caption{分群數 = 50}
-        \label{tab:ch4-hubert-phn-clu050}
+        \label{tab:ch4-hubert-phn-clu050-}
     \end{subtable}        
     \jefftablesep        
     \begin{subtable}[t]{\textwidth}
@@ -97,12 +98,12 @@
                  20000  &   0.6490   &  0.0173 &   3.3152  &  9.4123 & 0.6378 \\ \hline %%  2.1145       
         \end{tabular}
 \caption{分群數 = 100}
-        \label{tab:ch4-hubert-phn-clu100}
+        \label{tab:ch4-hubert-phn-clu100-}
     \end{subtable}        
 
 
 \caption{HuBERT 模型在不同次詞單位種類數量時的純度分析數據}
-    \label{tab:hubert-phn-results}
+    \label{tab:hubert-phn-results-}
 \end{table}
 
 }  % tables
@@ -234,7 +235,7 @@
 }
 
 
-表 \ref{tab:hubert-phn-results} 是 HuBERT 模型透過離散單元與不同次詞單位數量之聲學片段的純度與相互資訊數據。
+表 \ref{tab:hubert-phn-results-} 是 HuBERT 模型透過離散單元與不同次詞單位數量之聲學片段的純度與相互資訊數據。
 首先，為了觀察聲學片段數量對於機率熱圖與純度數據的影響，圖 \ref{fig:hub-u050-comparisons} 與圖 \ref{fig:hub-u100-comparisons} 分別以
 HuBERT 表徵、分群數為 50 和 100 的離散單元為基礎，比較原始離散單元、500 和 1000 種次詞單位三種設定下，不同聲學片段數量的條件機率熱圖。\jcm{它們分別是 HuBERT 模型配合分群數為 50 和 100 的離散單元模型，並將各自的離散單元使用單一詞演算法得到次詞單位數量為 500 和 1000 的聲學片段所得到的結果。}從中我們可以看出，當聲學片段數量上升時，熱圖可以觀察出許多更深的色塊，也就是有更多的聲學片段可以更集中的對應到特定音位。由此可見，有了更多樣的符記可以區別出更細節的發音差異，使整體的純度數值有所提升；然而，機率熱圖整體也變得更加破碎，因此歸類同樣音位的效果也相對變得較不明顯。
 
@@ -587,7 +588,7 @@ K-平均演算法的分群數仍是決定
 \jcm{section{分析結果} }
 \jcm{　　以下數據中的「長度壓縮比率」係指透過分詞方法後，每一個句子的「單詞」數與原先離散單元的數量相比之比值。由於長度壓縮比率是針對離散單元分詞所得到，與標註無關，因此只在音位分析的表格上呈現。}
 \jcm{subsection{基於各自音位的分析}}
-\jcm{　　首先，為了比較不同詞表大小對於純度、相互資訊等數據的影響，先分別固定語音模型為 HuBERT 和 Wav2vec 2.0，在離散單元的分群數量為 50、100、200 三種設定下，觀察詞表大小造成的變化。由 HuBERT （表 \ref{tab:hubert-phn-results}）和 Wav2vec 2.0（表 \ref{tab:w2v2-phn-results}）的數據比較可觀察到，詞表大小上升除了使得音位純度提高以外，相互資訊也是隨之提高的，可以發現使用分詞方法並給予足夠大的詞表，對於找出語音中的資訊確實有所幫助。}
+\jcm{　　首先，為了比較不同詞表大小對於純度、相互資訊等數據的影響，先分別固定語音模型為 HuBERT 和 Wav2vec 2.0，在離散單元的分群數量為 50、100、200 三種設定下，觀察詞表大小造成的變化。由 HuBERT （表 \ref{tab:hubert-phn-results-}）和 Wav2vec 2.0（表 \ref{tab:w2v2-phn-results}）的數據比較可觀察到，詞表大小上升除了使得音位純度提高以外，相互資訊也是隨之提高的，可以發現使用分詞方法並給予足夠大的詞表，對於找出語音中的資訊確實有所幫助。}
 \jcm{        接著從另一個角度切入，比較同樣都是離散單元分群數為 200 的條件下，不同語音基石模型的分析數據。由表 \ref{tab:ch4-models-phn} 可以發現，HuBERT 模型在音位純度與相互資訊勝過其他模型，這個結論與上一章節是一致的。}
 \jcm{        有趣的是，觀察長度壓縮比率可以發現，CPC 模型在分詞演算法的引入後，能夠使序列變得最短，但同時在音位純度與相互資訊上也有所犧牲；而 HuBERT 雖然在這些分析數據上高過其他三者，卻同時達成了比 Wav2vec 2.0 和 LogMel 更好的壓縮比率。因此綜合看來，這很可能是目前使用語音離散單元進行研究時，HuBERT 模型仍然是領域內首選的緣由。}
 \jcm{                \input{tables/chapter4/tab1}}
