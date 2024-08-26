@@ -68,8 +68,8 @@
 \subsubsection{聲學片段數量的影響}
 
 \input{ch4/seg0}
-\input{ch4/segA}
-\input{ch4/seg1}
+\input{ch4/seg2}
+\input{ch4/seg3}
 
 表 \ref{tab:hubert-phn-results-} 是 HuBERT 模型透過離散單元與不同次詞單位數量之聲學片段的純度與相互資訊數據。
 首先，為了觀察聲學片段數量對於機率熱圖與純度數據的影響，圖 \ref{fig:hub-u050-comparisons} 與圖 \ref{fig:hub-u100-comparisons} 分別以
@@ -134,32 +134,7 @@ K-平均演算法的分群數仍是決定
 
 \subsection{由音位角度探討}
 
-
-    {
-        \newcommand{\tempwidth}[0]{0.8\linewidth}
-        \begin{figure}
-             \centering
-             \begin{subfigure}{\textwidth}
-                 \centering
-                 \includegraphics[width=\tempwidth]{figures/ch4figs/phnrank-hub50pcs.png}
-                 \caption{分群數 = 50}
-                 \label{fig:hub-u050-phnrank-hub50pcs}
-             \end{subfigure}
-             \vfill
-             \begin{subfigure}{\textwidth}
-                 \centering
-                 \includegraphics[width=\tempwidth]{figures/ch4figs/phnrank-hub100pcs.png}
-                 \caption{分群數 = 100}
-                 \label{fig:hub-u050-phnrank-hub100pcs}
-             \end{subfigure}
-
-             \caption{HuBERT 表徵、K-平均演算法分群數 50 和 100，}
-             比較不同次詞單位種數時，符記熵最高與最低的音位排名
-                         \label{fig:hub-u050-phnrank}
-        \end{figure}
-    }
-
-    
+\input{ch4/segE}
 　　考慮完聲學片段，接著我們一樣以音位的角度切入，觀察各自音位的符記分佈集中程度。圖 \ref{fig:hub-u050-phnrank} 是對 HuBERT 模型所得的離散單元（比較分群數 50 和 100），以不同次詞單位種數
 取得聲學片段後，
 對應符記熵 $H(z|y)$ 最高與最低的排名。
@@ -167,77 +142,13 @@ K-平均演算法的分群數仍是決定
 因此，音位本身對應符記，不論是使用 K-平均演算法離散化獲得，或是以次詞單位重新歸類，這個分散程度的趨勢都是差不多的，音位本身的發音特徵確實是超出單一音框、影響範圍更廣的特性。 
 
 
-
-
-{
-\begin{figure}  % 有辦法再改圖
-    \centering
-    \includegraphics[width=0.6\linewidth]{figures/ch4figs/hub50-ap-detailedpur.png}
-    \caption{HuBERT 分群數 50 的離散單元，以不同符記種數取得聲學片段後，}
-    按照音位分類分開各自計算的純度與相互資訊
-    \label{fig:hub50-ap-detailedpur}
-\end{figure}
-}
-
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.6\linewidth]{figures/ch4figs/hub100-ap-detailedpur.png}
-     \caption{HuBERT 分群數 100 的離散單元，以不同符記種數取得聲學片段後，}
-    按照音位分類分開各自計算的純度與相互資訊
-    \label{fig:hub100-ap-detailedpur}
-\end{figure}
-
-
+\input{ch4/segF}
   
         最後，我們可以將音位分類分別考慮，統計其各自的純度與相互資訊數據，與上一章節比對。對 HuBERT 分群數 50 離散單元文本以不同次詞單位種數處理後，不同音位分類各自的純度與相互資訊數據以圖 \ref{fig:hub50-ap-detailedpur} 呈現。由結果可以發現，隨著次詞單位種數的增加，除了原本音位純度較低的塞音在音位純度與相互資訊的提升較為明顯外，其他音位分類的音位純度與相互資訊就已經較高，因而
 雖然增加得不是很明顯，
 但整體大致仍然有所改善。比較圖 \ref{fig:hub100-ap-detailedpur}，可以確認此一變化在分群數改為 100 時依然可見。
 
-
-% {
-
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=1\linewidth]{figures/ch4figs/hub-u050-ap0000-givenunit-byphn.png}
-%     \caption{hub-u050-ap0000-givenunit-byphn}
-%     \label{fig:hub-u050-ap0000-givenunit-byphn--detailed}
-% \end{figure}
-
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=1\linewidth]{figures/ch4figs/hub-u050-ap0500-givenunit-byphn.png}
-%     \caption{hub-u050-ap0500-givenunit-byphn}
-%     \label{fig:hub-u050-ap0500-givenunit-byphn--detailed}
-% \end{figure}
-
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=1\linewidth]{figures/ch4figs/hub-u050-ap1000-givenunit-byphn.png}
-%     \caption{hub-u050-ap1000-givenunit-byphn}
-%     \label{fig:hub-u050-ap1000-givenunit-byphn--detailed}
-% \end{figure}
-
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=1\linewidth]{figures/ch4figs/hub-u100-ap0000-givenunit-byphn.png}
-%     \caption{hub-u100-ap0000-givenunit-byphn}
-%     \label{fig:hub-u100-ap0000-givenunit-byphn--detailed}
-% \end{figure}
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=1\linewidth]{figures/ch4figs/hub-u100-ap0500-givenunit-byphn.png}
-%     \caption{hub-u100-ap0500-givenunit-byphn}
-%     \label{fig:hub-u100-ap0500-givenunit-byphn--detailed}
-% \end{figure}
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=1\linewidth]{figures/ch4figs/hub-u100-ap1000-givenunit-byphn.png}
-%     \caption{hub-u100-ap1000-givenunit-byphn}
-%     \label{fig:hub-u100-ap1000-givenunit-byphn--detailed}
-% \end{figure}
-% }  % heatmaps
-
+\input{ch4/segG}
 
 \jcm{section{分析結果} }
 \jcm{　　以下數據中的「長度壓縮比率」係指透過分詞方法後，每一個句子的「單詞」數與原先離散單元的數量相比之比值。由於長度壓縮比率是針對離散單元分詞所得到，與標註無關，因此只在音位分析的表格上呈現。}
